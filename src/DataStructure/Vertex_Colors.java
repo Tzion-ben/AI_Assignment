@@ -1,5 +1,4 @@
 package DataStructure;
-import java.util.ArrayList;
 
 /**
  * This interface represent the set of getters to return a ArrayList of digits
@@ -10,18 +9,18 @@ import java.util.ArrayList;
 public interface Vertex_Colors {
 
 	/**
-	 * @return ArrayList with all the numbers that their color is RED
+	 * @return Array with all the numbers that their color is RED
 	 */
-	public ArrayList<Integer> getRedBlocks();
+	public int [] getRedBlocks();
 
 	/**
-	 * @return ArrayList with all the numbers that their color is GREES
+	 * @return Array with all the numbers that their color is BLACK
 	 */
-	public ArrayList<Integer> getGreenBlocks();
+	public int [] getBlacBlocks();
 
 	/**
-	 * @return ArrayList with all the numbers that their color is BLACK
+	 * @return Array with all the numbers that their color is GREES
 	 */
-	public ArrayList<Integer> getBlacBlocks();
+	public int [] getGreenBlocks();
 
 }

@@ -46,7 +46,7 @@ public class State_Node implements State_Data {
 	}
 
 	@Override
-	public ArrayList<Integer> getRedBlocks() {
+	public int[] getRedBlocks() {
 		int SIZE_1D=this.StateMatrix.length;
 		if(SIZE_1D>0) {
 			int SIZE_2D=this.StateMatrix[0].length;
@@ -60,13 +60,13 @@ public class State_Node implements State_Data {
 	}
 
 	@Override
-	public ArrayList<Integer> getGreenBlocks() {
+	public int[] getGreenBlocks() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Integer> getBlacBlocks() {
+	public int[] getBlacBlocks() {
 		// TODO Auto-generated method stub
 		return null;
 	}

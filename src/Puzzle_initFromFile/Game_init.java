@@ -11,7 +11,10 @@ import java.io.IOException;
 
 public class Game_init {
 
-
+	/**
+	 * This functions represent regular getters and setters
+	 * @return
+	 */
 	public String getAlgo() {
 		return algo;
 	}
@@ -76,9 +79,9 @@ public class Game_init {
 		Game_Matrix = game_Matrix;
 	}
 
-	/**
-	 * This function reading the game details from TXT file 
-	 */
+	/************************************************************************************************
+	 * This private function reading the game details from TXT file.
+	 ************************************************************************************************/
 	private void setFromFile(File newPuzzle) {
 		try {
 			//File newPuzzle = new File("input.txt");
@@ -95,15 +98,36 @@ public class Game_init {
 					this.showTimeORnot=newPuzzleReader.readLine();
 					this.showOpenListORnot=newPuzzleReader.readLine();
 					this.matSIZE=newPuzzleReader.readLine();
-					this.BlackBlocks=newPuzzleReader.readLine();
-					this.RedBloacks=newPuzzleReader.readLine();
+
+					//want to cut the colon from the line, to work only with the numbers after it
+					String temp_BlackBlocks=newPuzzleReader.readLine();
+					String [] withOUTaColon_Black=temp_BlackBlocks.split(":");
+					if(withOUTaColon_Black.length>1)
+						this.BlackBlocks=withOUTaColon_Black[1];
+					else
+						//else: if no have a numbers for RED Blocks
+						this.BlackBlocks=null;
+					//**end the cutting for the BALCK Blocks
+					
+					//want to cut the colon from the line, to work only with the numbers after it
+					String temp_RedBlocks=newPuzzleReader.readLine();
+					String [] withOUTaColon_Red=temp_RedBlocks.split(":");
+					if(withOUTaColon_Red.length>1)
+						this.BlackBlocks=withOUTaColon_Red[1];
+					else
+						//else: if no have a numbers for BLACK Blocks
+						this.RedBloacks=null;
+					//**end the cutting for the RED Blocks
+
 				}
 				//pulling the board matrix with help of runCount
 				if(runCount>=6) {
-					while(runCount<9) {	
+					while(runCount<8) {	
 						runCount++;
-						this.Game_Matrix+=newPuzzleReader.readLine();
+						this.Game_Matrix+=newPuzzleReader.readLine()+",";
 					}
+					//added the last line without ","
+					this.Game_Matrix+=newPuzzleReader.readLine();
 				}
 			}
 			newPuzzleReader.close();
@@ -129,5 +153,4 @@ public class Game_init {
 	public Game_init(File newPuzzle) {
 		setFromFile(newPuzzle);
 	}
-
 }

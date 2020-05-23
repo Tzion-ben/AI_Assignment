@@ -1,92 +1,80 @@
 package DataStructure;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
+import Colored_Matrix_Management.Matrix_Variable;
 
 public class State_Node implements State_Data {
 
 	@Override
 	public int getStateId() {
-		return this.getStateId();
+		return this.stateId;
 	}
 
 	@Override
-	public int[][] getStateMatrix() {
-		// TODO Auto-generated method stub
-		return null;
+	public Matrix_Variable [][] getStateMatrix() {
+		return this.StateMatrix;
 	}
 
 	@Override
-	public int HeuristicFunctions() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getHeuristicFunctions() {
+		return this.HeuristicFunctions;
 	}
 
 	@Override
-	public State_Data fatherPointer() {
-		// TODO Auto-generated method stub
+	public State_Data getFatherPointer() {
 		return this.fatherPointer;
 	}
 
 	@Override
 	public double getWeightUntilNow() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.WeightUntilNow;
 	}
 
 	@Override
 	public String getInfo() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.info;
 	}
 
 	@Override
 	public void setInfo(String s) {
-		// TODO Auto-generated method stub
-
+		this.info=s;
 	}
 
 	@Override
-	public int[] getRedBlocks() {
-		int SIZE_1D=this.StateMatrix.length;
-		if(SIZE_1D>0) {
-			int SIZE_2D=this.StateMatrix[0].length;
-			for(int i=0 ; i<SIZE_1D ; i++) {
-				for(int j=0 ; j<SIZE_2D ; j++) {
-					
-				}
-			}
-		}
-		return this.RedBlocks;
-	}
-
-	@Override
-	public int[] getGreenBlocks() {
+	public Hashtable<Integer, Integer> getRedBlocks() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int[] getBlacBlocks() {
+	public Hashtable<Integer, Integer> getBlacBlocks() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public Hashtable<Integer, Integer> getGreenBlocks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	//****************** Private Methods and Data *****************
 
 	private int stateId;
-	private int [][] StateMatrix;
+	private Matrix_Variable [][] StateMatrix;
 	private int HeuristicFunctions;
 	private State_Node fatherPointer;
 	private double WeightUntilNow;
 	private String info;
 
-	private ArrayList<Integer> RedBlocks;
-	private ArrayList<Integer> GreenBlocks;
-	private ArrayList<Integer> BlackBlocks;
+	private Hashtable<Integer,Integer> RedBlocks;
+	private Hashtable<Integer,Integer> GreenBlocks;
+	private Hashtable<Integer,Integer> BlackBlocks;
 
 	//****************** Constructors *****************
 
-	public State_Node(int stateId, int [][] StateMatrix, int HeuristicFunctions, State_Node fatherPointer,
+	public State_Node(int stateId, Matrix_Variable [][] StateMatrix, int HeuristicFunctions, State_Node fatherPointer,
 			double WeightUntilNow, String info) {
 		this.stateId=stateId;
 		this.StateMatrix=StateMatrix;
@@ -95,5 +83,4 @@ public class State_Node implements State_Data {
 		this.WeightUntilNow=WeightUntilNow;
 		this.info=info;
 	}
-
 }

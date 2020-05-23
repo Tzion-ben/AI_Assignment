@@ -1,5 +1,7 @@
 package DataStructure;
 
+import java.util.Hashtable;
+
 /**
  * This interface represent the set of getters to return a ArrayList of digits
  * that a block with that color contains 
@@ -11,16 +13,16 @@ public interface Vertex_Colors {
 	/**
 	 * @return Array with all the numbers that their color is RED
 	 */
-	public int [] getRedBlocks();
+	public Hashtable<Integer, Integer> getRedBlocks();
 
 	/**
 	 * @return Array with all the numbers that their color is BLACK
 	 */
-	public int [] getBlacBlocks();
+	public Hashtable<Integer, Integer> getBlacBlocks();
 
 	/**
 	 * @return Array with all the numbers that their color is GREES
 	 */
-	public int [] getGreenBlocks();
+	public Hashtable<Integer, Integer> getGreenBlocks();
 
 }

@@ -1,4 +1,7 @@
 package DataStructure;
+
+import Colored_Matrix_Management.Matrix_Variable;
+
 /**
  * This interface represents the set of operations applicable on a 
  * State (vertex/node) in the solution search graph.
@@ -16,19 +19,19 @@ public interface State_Data extends Vertex_Colors{
 	 * 
 	 * @return The matrix associated with the State 
 	 */
-	public int [][] getStateMatrix ();
+	public Matrix_Variable [][] getStateMatrix ();
 
 	/**
 	 * @return The Heuristic functions of the State(node)
 	 */
-	public int HeuristicFunctions();
-	
+	public int getHeuristicFunctions();
+
 	/**
 	 * @return a reference to the father of this State,
 	 * so that at the goal we can go back to find all the road. 
 	 */
-	public State_Data fatherPointer();
-	
+	public State_Data getFatherPointer();
+
 	/**
 	 * @return The weight of the road so far.
 	 */
@@ -44,5 +47,5 @@ public interface State_Data extends Vertex_Colors{
 	 * @param s
 	 */
 	public void setInfo(String s);
-	
+
 }

@@ -1,4 +1,7 @@
 package Puzzle_initFromFile;
+/**
+ * 
+ */
 import java.io.BufferedReader;
 /**
  * This class is is about reading the Puzzle details from TXT file 
@@ -13,7 +16,6 @@ public class initTXT {
 
 	/**
 	 * This functions represent regular getters
-	 * @return
 	 */
 	public String getAlgo() {
 		return algo;
@@ -71,7 +73,7 @@ public class initTXT {
 						//else: if no have a numbers for BLACK Blocks
 						this.BlackBlocks=null;
 					//**end the cutting for the BLACK Blocks
-					
+
 					//want to cut the colon from the line, to work only with the numbers after it
 					String temp_RedBlocks=newPuzzleReader.readLine();
 					String [] withOUTaColon_Red=temp_RedBlocks.split(" ");

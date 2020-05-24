@@ -1,7 +1,7 @@
-package Colored_Matrix_Management;
+package DataStructure;
 /**
  * This enum is to set the directions of every block number.
- * L-left, R-right, U-up, D-down, N-none(for the start State).
+ * L-left, R-right, U-up, D-down, N-none(for the start State ONLY).
  * @author Tzion
  *
  */

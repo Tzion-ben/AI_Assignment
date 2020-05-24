@@ -6,6 +6,7 @@ package Colored_Matrix_Management;
  */
 public class Matrix_Variable {
 
+	//a simple getters and setters
 	public int getNum() {
 		return this.num;
 	}
@@ -13,20 +14,22 @@ public class Matrix_Variable {
 	public Color getColor() {
 		return this.color;
 	}
-	
-	public Direction getDirection() {
-		return this.direction;
+
+	public void setNum(int num) {
+		this.num=num;
 	}
 
-	//****************** Private Methods and Data *****************
+	public void setColor(Color color) {
+		this.color=color;
+	}
+
+	//****************** Private Data *****************
 	private int num;
 	private Color color;
-	private Direction direction;
 
 	//****************** Constructors *****************
-	public Matrix_Variable(int num , Color color , Direction direction) {
+	public Matrix_Variable(int num , Color color ) {
 		this.num=num;
 		this.color=color;
-		this.direction=direction;
 	}
 }

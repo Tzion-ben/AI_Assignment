@@ -2,7 +2,6 @@ package Puzzle_initFromFile;
 
 import java.util.Hashtable;
 import Colored_Matrix_Management.Color;
-import Colored_Matrix_Management.Direction;
 import Colored_Matrix_Management.Matrix_Variable;
 
 /**
@@ -102,20 +101,20 @@ public class initMatrix {
 		for(int i=0;i<this.n;i++) {
 			for(int j=0;j<this.m;j++) {
 				if(intArray[RunONstringMat_Integeres].equals("_")) {
-					this.ThePuzzle[i][j]=new Matrix_Variable(-1, Color.N, Direction.N);
+					this.ThePuzzle[i][j]=new Matrix_Variable(-1, Color.E);
 				}
 				else {
 					//if the color of the block with that number is Black
 					if(this.BlackBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres])))
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.BLACK, Direction.N);
+						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.BLACK);
 
 					//if the color of the block with that number is Red
 					else if(this.RedBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres]))) 
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.RED, Direction.N);
+						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.RED);
 
 					//if the color of the block with that number is Green
 					else if(this.GreenBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres]))) 
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.GREEN, Direction.N);
+						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.GREEN);
 
 					RunONstringMat_Integeres++;
 				}

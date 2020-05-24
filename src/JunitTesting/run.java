@@ -18,7 +18,7 @@ public class run {
 		Matrix_Variable [][] vv=mm.getThePuzzle();
 		for(int i=0;i<vv.length;i++) {
 			for(int j=0;j<vv[0].length;j++) {
-				System.out.print(vv[i][j].getNum()+","+vv[i][j].getColor()+","+vv[i][j].getDirection()+"|");
+				System.out.print(vv[i][j].getNum()+","+vv[i][j].getColor()+"|");
 			}
 			System.out.println();
 		}

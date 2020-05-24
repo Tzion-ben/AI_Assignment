@@ -1,23 +1,94 @@
 package DataStructure;
-
-import java.util.Hashtable;
+import Colored_Matrix_Management.Color;
+/**
+ * 
+ * @author Tzion
+ */
 import Colored_Matrix_Management.Matrix_Variable;
 
 public class State_Node implements State_Data {
 
+	/**
+	 * 
+	 */
 	@Override
-	public int getStateId() {
-		return this.stateId;
+	public void setStateMatrix() {
+		for(int i=0; i<this.StateMatrix.length;i++) {
+			for(int j=0;j<this.StateMatrix[0].length;j++) {
+				Color opColor=null;
+
+				if(this.StateMatrix[i][j].getNum()==this.op.getNum()) {
+					this.StateMatrix[i][j].setNum(-1);
+					opColor=this.StateMatrix[i][j].getColor();
+					this.StateMatrix[i][j].setColor(Color.E);	
+				}
+
+				switch (this.op.getDirection()) {
+				case R:
+					this.StateMatrix[i][j+1].setNum(op.getNum());
+					this.StateMatrix[i][j+1].setColor(opColor);
+					break;
+				case D:
+					this.StateMatrix[i+1][j].setNum(op.getNum());
+					this.StateMatrix[i+1][j].setColor(opColor);
+					break;
+				case L:
+					this.StateMatrix[i][j-1].setNum(op.getNum());
+					this.StateMatrix[i][j-1].setColor(opColor);
+					break;
+				case U:
+					this.StateMatrix[i-1][j].setNum(op.getNum());
+					this.StateMatrix[i-1][j].setColor(opColor);
+					break;
+				}
+			}
+		}
+
+	}
+
+
+
+
+
+
+	@Override
+	public void setF() {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void setH() {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void setG() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public Matrix_Variable [][] getStateMatrix() {
+	public Oprerator getOperation() {
+		return this.op;
+	}
+
+
+	@Override
+	public Oprerator[] setOprerators() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	//********************** simple getters
+	@Override
+	public Matrix_Variable[][] getStateMatrix() {
 		return this.StateMatrix;
-	}
-
-	@Override
-	public int getHeuristicFunctions() {
-		return this.HeuristicFunctions;
 	}
 
 	@Override
@@ -26,61 +97,40 @@ public class State_Node implements State_Data {
 	}
 
 	@Override
-	public double getWeightUntilNow() {
-		return this.WeightUntilNow;
+	public int getF() {
+		return this.f;
 	}
 
 	@Override
-	public String getInfo() {
-		return this.info;
+	public int getH() {
+		return this.h;
 	}
 
 	@Override
-	public void setInfo(String s) {
-		this.info=s;
+	public int getG() {
+		return this.g;
 	}
 
-	@Override
-	public Hashtable<Integer, Integer> getRedBlocks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Hashtable<Integer, Integer> getBlacBlocks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Hashtable<Integer, Integer> getGreenBlocks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 	//****************** Private Methods and Data *****************
 
-	private int stateId;
 	private Matrix_Variable [][] StateMatrix;
-	private int HeuristicFunctions;
+	private Oprerator op;
 	private State_Node fatherPointer;
-	private double WeightUntilNow;
-	private String info;
+	private int f;
+	private int h;
+	private int g;
 
-	private Hashtable<Integer,Integer> RedBlocks;
-	private Hashtable<Integer,Integer> GreenBlocks;
-	private Hashtable<Integer,Integer> BlackBlocks;
 
 	//****************** Constructors *****************
 
-	public State_Node(int stateId, Matrix_Variable [][] StateMatrix, int HeuristicFunctions, State_Node fatherPointer,
-			double WeightUntilNow, String info) {
-		this.stateId=stateId;
+	public State_Node(Matrix_Variable [][] StateMatrix, Oprerator op, int f,int h, int g, State_Node fatherPointer) {
 		this.StateMatrix=StateMatrix;
-		this.HeuristicFunctions=HeuristicFunctions;
+		this.op=op;
 		this.fatherPointer=fatherPointer;
-		this.WeightUntilNow=WeightUntilNow;
-		this.info=info;
+		this.f=f;
+		this.h=h;
+		this.g=g;
+
 	}
 }

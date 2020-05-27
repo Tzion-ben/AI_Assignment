@@ -10,7 +10,6 @@ import Colored_Matrix_Management.Matrix_Variable;
 public interface State_Data{
 
 	/**
-	 * 
 	 * @return The matrix associated with the State, after setting it
 	 */
 	public Matrix_Variable [][] getStateMatrix ();

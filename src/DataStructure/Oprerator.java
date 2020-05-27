@@ -2,9 +2,9 @@ package DataStructure;
 /**
  * This class represent a object that contains number of the block that will
  * move and the direction that it can moves (L,R,U,D)
- * F is:
- * H is:
- * G is: 
+ * F is: H + G
+ * H is: is the heuristic function
+ * G is: is the real cost from this specific state to the goal
  * @author Tzion
  */
 
@@ -29,30 +29,6 @@ public class Oprerator {
 		this.direction=direction;
 	}
 
-	public int getF() {
-		return f;
-	}
-
-	public void setF(int f) {
-		this.f = f;
-	}
-
-	public int getH() {
-		return h;
-	}
-
-	public void setH(int h) {
-		this.h = h;
-	}
-
-	public int getG() {
-		return g;
-	}
-
-	public void setG(int g) {
-		this.g = g;
-	}
-
 	public Color getColor() {
 		return color;
 	}
@@ -65,18 +41,12 @@ public class Oprerator {
 	private int num;
 	private Direction direction;
 	private Color color;
-	private int f;
-	private int h;
-	private int g;
 
 	//****************** Constructors *****************
-	public Oprerator(int num , Direction direction, Color color, int f, int h, int g) {
+	public Oprerator(int num , Direction direction, Color color) {
 		this.num=num;
 		this.direction=direction;
 		this.color=color;
-		this.f=f;
-		this.h=h;
-		this.g=g;
 	}
 
 }

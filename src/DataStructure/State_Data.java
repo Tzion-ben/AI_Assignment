@@ -62,8 +62,8 @@ public interface State_Data{
 	public Oprerator getOperation();
 
 	/**
-	 * @return all the operators that allows on this state
+	 * all the operators that allows on this state
 	 */
-	public Oprerator [] setOprerators ();
+	public void setOprerators ();
 
 }

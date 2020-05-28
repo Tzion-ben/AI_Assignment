@@ -1,4 +1,6 @@
 package DataStructure;
+import java.util.ArrayList;
+
 import Colored_Matrix_Management.Color;
 /**
  * 
@@ -51,7 +53,7 @@ public class State_Node implements State_Data {
 					this.StateMatrix[i-1][j].setNum(op.getNum());
 					this.StateMatrix[i-1][j].setColor(opColor);
 					break;
-				case N:
+				case N://only for the start state
 					break;
 				}
 			}
@@ -74,7 +76,7 @@ public class State_Node implements State_Data {
 					originalI=i;
 					originalJ=j;
 
-					//if it's not the -1 Lable that represent "_" : a empty bloack
+					//if it's not the -1 Label that represent "_" : a empty bloack
 					if(this.StateMatrix[i][j].getNum()!=-1) {
 						if(this.StateMatrix[i][j].getNum() == k) {
 							new_i=i;
@@ -95,7 +97,7 @@ public class State_Node implements State_Data {
 							h+=cost;
 						}
 					}
-					//else: ==-1 so put k--, so it can run again on this k
+					//else: ==-1 so put k=k-1, so it can run again on this k
 					else
 						k--;
 
@@ -110,7 +112,8 @@ public class State_Node implements State_Data {
 	}
 
 	/**
-	 * 
+	 * this functions sets the g function of this state, the g is the real cost so far.
+	 * the function add the given g from the state before to the cost to create this state
 	 */
 	@Override
 	public void setG() {
@@ -128,10 +131,124 @@ public class State_Node implements State_Data {
 		this.f=h+g;
 	}
 
+	/**
+	 * this function sets all the operators that allows on this state
+	 */
 	@Override
-	public Oprerator[] setOprerators() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setOprerators() {
+		this.allowOP = new ArrayList<Oprerator>();
+
+		//will hold the position of the Label -1 that represent the empty block :"_" 
+		int [] pos = searchSpace();
+		int i_ofSpace=pos[0];
+		int j_ofSpace=pos[1];
+
+		//will help to work with the rows and the columns more easy
+		//n=rows ; m=columns
+		int n=this.StateMatrix.length;
+		int m=this.StateMatrix[0].length;
+
+
+		/**
+		 * if the -1 Label is at the mat[0][0....m-1](first row) or mat[n-1][0....m-1](last row), so will always check the right
+		 * and left blocks. Than down if the row is 0 and up if the row n-1
+		 */
+		if(i_ofSpace==0 ||i_ofSpace==n-1) {
+			if(j_ofSpace>0 && j_ofSpace<(m-1)) {
+				boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor());
+				if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace+1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor()));}
+				boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor());
+				if(l) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace-1].getNum(),Direction.R, this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor()));}
+			}
+
+			//the up or down operation
+			if(i_ofSpace==0) {
+				boolean d=getAllowORnot(this.StateMatrix[1][j_ofSpace].getColor());
+				if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[1][j_ofSpace].getColor()));}
+			}
+			else if(i_ofSpace==(n-1)) {
+				boolean u=getAllowORnot(this.StateMatrix[1][j_ofSpace].getColor());
+				if(u) {this.allowOP.add(new Oprerator(this.StateMatrix[n-2][j_ofSpace].getNum(),Direction.D, this.StateMatrix[n-2][j_ofSpace].getColor()));}
+			}
+		}
+
+
+		/**
+		 * if the -1 Label is at the mat[0...n-1][0](first column) or mat[0...n-1][m-1](last column), so will always check the up
+		 * and down blocks. Than right if the column is 0 and up if the column m-1
+		 */
+		if(j_ofSpace==0 ||j_ofSpace==m-1) {
+			if(i_ofSpace>0 && i_ofSpace<(n-1)) {
+				boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
+				if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
+				boolean u=getAllowORnot(this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor());
+				if(u) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace-1][j_ofSpace].getNum(),Direction.D, this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor()));}
+			}
+
+			//the right or left operation
+			if(j_ofSpace==0) {
+				boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][1].getColor());
+				if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][1].getColor()));}
+			}
+			else if(j_ofSpace==(m-1)) {
+				boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][m-2].getColor());
+				if(l) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][m-2].getNum(),Direction.R, this.StateMatrix[i_ofSpace][m-2].getColor()));}
+			}
+		}
+
+		/**
+		 * if the -1 Label is not at the first row or column and not at the last row or column
+		 */
+		else {
+			boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor());
+			if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace+1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor()));}
+			boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor());
+			if(l) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace-1].getNum(),Direction.R, this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor()));}
+			boolean u=getAllowORnot(this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor());
+			if(u) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace-1][j_ofSpace].getNum(),Direction.D, this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor()));}
+			boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
+			if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
+		}
+	}
+
+	//*************************** Private Methods *********************************
+
+	/**
+	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
+	 * @return array wit the i and j of the -1
+	 */
+	private int [] searchSpace () {
+		int [] pos = new int[2];
+		for(int i=0 ; i<this.StateMatrix.length ; i++) {
+			for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
+				if (this.StateMatrix[i][j].getNum() == -1) {
+					pos[0]=i;
+					pos[1]=j;
+				}
+			}
+		}
+
+		return pos;
+	}
+
+	/**
+	 * this method checks the color of the block and says if this block can move or 
+	 * not: RED and GRENN - can move, BLACK - can't move 
+	 * @param color c
+	 * @return
+	 */
+	private boolean getAllowORnot(Color c) {
+		boolean ans=false;
+		switch (c) {
+		case RED:
+		case GREEN:
+			ans=true;
+			break;
+		case BLACK:
+			ans=false;;
+			break;
+		}
+		return ans;
 	}
 
 	/**
@@ -157,7 +274,6 @@ public class State_Node implements State_Data {
 		}
 		return cost;
 	}
-
 
 	//********************** simple getters
 	@Override
@@ -190,12 +306,12 @@ public class State_Node implements State_Data {
 		return this.op;
 	}
 
-	public Oprerator [] getOprerators() {
-		return this.oprerators;
+	public ArrayList<Oprerator>  getOprerators() {
+		return this.allowOP;
 	}
 
 
-	//****************** Private Methods and Data *****************
+	//****************** Private Data *****************
 
 	private Matrix_Variable [][] StateMatrix;
 	private Oprerator op;
@@ -204,8 +320,7 @@ public class State_Node implements State_Data {
 	private int h;
 	private int g;
 
-	private Oprerator [] oprerators;
-
+	private ArrayList<Oprerator> allowOP;
 
 	//****************** Constructors *****************
 

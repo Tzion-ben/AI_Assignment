@@ -2,9 +2,6 @@ package DataStructure;
 /**
  * This class represent a object that contains number of the block that will
  * move and the direction that it can moves (L,R,U,D)
- * F is: H + G
- * H is: is the heuristic function
- * G is: is the real cost from this specific state to the goal
  * @author Tzion
  */
 
@@ -37,6 +34,10 @@ public class Oprerator {
 		this.color = color;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + num + direction +"]";
+	}
 	//****************** Private Data *****************
 	private int num;
 	private Direction direction;

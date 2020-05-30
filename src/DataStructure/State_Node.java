@@ -1,5 +1,6 @@
 package DataStructure;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import Colored_Matrix_Management.Color;
 /**
@@ -17,6 +18,7 @@ public class State_Node implements State_Data {
 	private void manageAllOperations() {
 		setStateMatrix();
 		setH();
+		setOprerators();
 	}
 
 	/**
@@ -26,77 +28,85 @@ public class State_Node implements State_Data {
 	 */
 	@Override
 	public void setStateMatrix() {
-		for(int i=0; i<this.StateMatrix.length;i++) {
-			for(int j=0;j<this.StateMatrix[0].length;j++) {
+		boolean stop=false;
+		
+		for(int i=0; i<this.StateMatrix.length&&!stop;i++) {
+			for(int j=0;j<this.StateMatrix[0].length&&!stop;j++) {
 				Color opColor=null;
 
 				if(this.StateMatrix[i][j].getNum()==this.op.getNum()) {
+					stop=true;
 					this.StateMatrix[i][j].setNum(-1);
 					opColor=this.StateMatrix[i][j].getColor();
 					this.StateMatrix[i][j].setColor(Color.E);	
-				}
 
-				switch (this.op.getDirection()) {
-				case R:
-					this.StateMatrix[i][j+1].setNum(op.getNum());
-					this.StateMatrix[i][j+1].setColor(opColor);
-					break;
-				case D:
-					this.StateMatrix[i+1][j].setNum(op.getNum());
-					this.StateMatrix[i+1][j].setColor(opColor);
-					break;
-				case L:
-					this.StateMatrix[i][j-1].setNum(op.getNum());
-					this.StateMatrix[i][j-1].setColor(opColor);
-					break;
-				case U:
-					this.StateMatrix[i-1][j].setNum(op.getNum());
-					this.StateMatrix[i-1][j].setColor(opColor);
-					break;
-				case N://only for the start state
-					break;
+
+					switch (this.op.getDirection()) {
+					case R:
+						this.StateMatrix[i][j+1].setNum(op.getNum());
+						this.StateMatrix[i][j+1].setColor(opColor);
+						break;
+					case D:
+						this.StateMatrix[i+1][j].setNum(op.getNum());
+						this.StateMatrix[i+1][j].setColor(opColor);
+						break;
+					case L:
+						this.StateMatrix[i][j-1].setNum(op.getNum());
+						this.StateMatrix[i][j-1].setColor(opColor);
+						break;
+					case U:
+						this.StateMatrix[i-1][j].setNum(op.getNum());
+						this.StateMatrix[i-1][j].setColor(opColor);
+						break;
+					case N://only for the start state
+						break;
+					}
 				}
 			}
 		}
 	}
 
+
 	/**
-	 * 
+	 * this function calculate the heuristic function of this state based on the "Manhattan Distance" 
 	 */
 	@Override
 	public void setH() {
 		int h=0;
 		int originalI=0, originalJ=0, new_i=0, new_j=0;
 		int stepsForI=0, stepsForJ=0;
-		for(int k=1;k>this.StateMatrix.length*this.StateMatrix[0].length;k++) {
+
+		int k=1;
+		//create the goal state to check the real original location of k
+		Hashtable<Integer, Psiotion> help = helpPositios();
+
+		for(int x=0 ; x<help.size() ; x++) {
 			for(int i=0;i<this.StateMatrix.length;i++) {
 				for(int j=0; j<this.StateMatrix[0].length;j++) {
 
-					//the goal position of K
-					originalI=i;
-					originalJ=j;
-
-					//if it's not the -1 Label that represent "_" : a empty bloack
+					//if it's not the -1 Label that represent "_" : a empty block
 					if(this.StateMatrix[i][j].getNum()!=-1) {
 						if(this.StateMatrix[i][j].getNum() == k) {
-							new_i=i;
-							new_j=j;
 
-
-							//how many steps have to do to pot the numbet at his posiotion 
+							//how many steps have to do to put the number at his position 
 							//for the h function
-							stepsForI=originalI-new_i;
-							stepsForJ=originalJ-new_j;
+							stepsForI=help.get(k).getI()-i;
+							stepsForJ=help.get(k).getJ()-j;
 
 							//returns the cost of the block to move
 							int costColor= getCost(this.StateMatrix[i][j].getColor());
 							//calculate steps for rows+columns
-							int cost=(stepsForI+stepsForJ)*costColor;
+							int cost=(Math.abs(stepsForI)+Math.abs(stepsForJ))*costColor;
 
 							//added it to the h function until now
 							h+=cost;
+							k++;
+
+							j=this.StateMatrix[0].length;
+							i=this.StateMatrix.length;
 						}
 					}
+
 					//else: ==-1 so put k=k-1, so it can run again on this k
 					else
 						k--;
@@ -107,6 +117,7 @@ public class State_Node implements State_Data {
 				}
 			}
 		}
+
 		this.h=h;
 		setG();
 	}
@@ -124,7 +135,7 @@ public class State_Node implements State_Data {
 	}
 
 	/**
-	 * Sets the f of the state to be h+g, send the h and g that calculate so far
+	 * Sets the f of the state to be h+g, send the h and g that calculated so far
 	 */
 	@Override
 	public void setF() {
@@ -199,7 +210,7 @@ public class State_Node implements State_Data {
 		/**
 		 * if the -1 Label is not at the first row or column and not at the last row or column
 		 */
-		else {
+		else if(i_ofSpace>0 && i_ofSpace<n-1 && j_ofSpace>0 && j_ofSpace<m-1) {
 			boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor());
 			if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace+1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor()));}
 			boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor());
@@ -209,6 +220,37 @@ public class State_Node implements State_Data {
 			boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
 			if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
 		}
+	}
+
+	/**
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj!=null&&(obj instanceof State_Node)){
+			State_Node n=(State_Node) obj;
+			Matrix_Variable [][] n_Matrix=n.getStateMatrix();
+
+			for(int i=0; i<this.StateMatrix.length ; i++) {
+				for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
+					if(this.StateMatrix[i][j].getNum() != n_Matrix[i][j].getNum()) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * this function is sets the operator of the state if the algorithem found a more better path
+	 * to this state
+	 */
+	public void setOpretor (Oprerator op) {
+		this.op=op;
 	}
 
 	//*************************** Private Methods *********************************
@@ -227,7 +269,6 @@ public class State_Node implements State_Data {
 				}
 			}
 		}
-
 		return pos;
 	}
 
@@ -275,6 +316,22 @@ public class State_Node implements State_Data {
 		return cost;
 	}
 
+	private Hashtable<Integer, Psiotion> helpPositios() {
+		Hashtable<Integer, Psiotion> realPos = new Hashtable<Integer, Psiotion>();
+		int i=0;
+		int j=0;
+		for(int k=1 ; k<=this.StateMatrix.length*this.StateMatrix[0].length ; k++) {
+			realPos.put(k, new Psiotion(k, i, j));
+			j++;
+			if(j%this.StateMatrix[0].length ==0) {
+				i++;
+				j=0;
+			}
+		}
+
+		return realPos;
+
+	}
 	//********************** simple getters
 	@Override
 	public Matrix_Variable[][] getStateMatrix() {

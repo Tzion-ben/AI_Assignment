@@ -66,4 +66,11 @@ public interface State_Data{
 	 */
 	public void setOprerators ();
 
+	/**
+	 * this function checks if this.State is the same as the Goal state
+	 * @param obj
+	 * @return
+	 */
+	boolean equals(Object obj);
+
 }

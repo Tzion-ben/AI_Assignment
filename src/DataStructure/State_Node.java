@@ -29,7 +29,7 @@ public class State_Node implements State_Data {
 	@Override
 	public void setStateMatrix() {
 		boolean stop=false;
-		
+
 		for(int i=0; i<this.StateMatrix.length&&!stop;i++) {
 			for(int j=0;j<this.StateMatrix[0].length&&!stop;j++) {
 				Color opColor=null;
@@ -73,7 +73,7 @@ public class State_Node implements State_Data {
 	@Override
 	public void setH() {
 		int h=0;
-		int originalI=0, originalJ=0, new_i=0, new_j=0;
+		//int originalI=0, originalJ=0, new_i=0, new_j=0;
 		int stepsForI=0, stepsForJ=0;
 
 		int k=1;
@@ -107,16 +107,15 @@ public class State_Node implements State_Data {
 						}
 					}
 
-					//else: ==-1 so put k=k-1, so it can run again on this k
-					else
-						k--;
-
 					//returns the moveCounters to start position
 					stepsForI=0;
 					stepsForJ=0;
 				}
 			}
 		}
+
+		//cleaning the memory from the helpHashTable
+		help.clear();
 
 		this.h=h;
 		setG();
@@ -139,7 +138,7 @@ public class State_Node implements State_Data {
 	 */
 	@Override
 	public void setF() {
-		this.f=h+g;
+		this.f=this.h+this.g;
 	}
 
 	/**
@@ -220,7 +219,13 @@ public class State_Node implements State_Data {
 			boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
 			if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
 		}
+
+		//removes the reversed operation
+		removeReversedOp();
 	}
+
+
+	//****************** Public methods *****************
 
 	/**
 	 * 
@@ -243,6 +248,20 @@ public class State_Node implements State_Data {
 			return true;
 		}
 		return false;
+	}
+
+
+	/**
+	 * This function create a deep Copy of the given matrix state, so the new state won't
+	 * ruin the matrix of an existent father state of it   
+	 * @return
+	 */
+	public Matrix_Variable [][] deepCopy (){
+		Matrix_Variable [][] newStateMat = new Matrix_Variable [this.StateMatrix.length][this.StateMatrix[0].length];
+		for(int i=0 ; i<newStateMat.length ; i++) 
+			for(int j=0 ; j<newStateMat[0].length ; j++) 
+				newStateMat[i][j]=new Matrix_Variable(this.StateMatrix[i][j].getNum(), this.StateMatrix[i][j].getColor());
+		return newStateMat;
 	}
 
 	/**
@@ -316,6 +335,10 @@ public class State_Node implements State_Data {
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private Hashtable<Integer, Psiotion> helpPositios() {
 		Hashtable<Integer, Psiotion> realPos = new Hashtable<Integer, Psiotion>();
 		int i=0;
@@ -332,6 +355,42 @@ public class State_Node implements State_Data {
 		return realPos;
 
 	}
+
+	/**
+	 * This function removes from the allow operator of this state the operation
+	 * that is reversed to the operation that create this state  
+	 */
+	private void removeReversedOp () {
+		Oprerator opsitOp = new Oprerator(this.op.getNum(), getReversedOp(this.op.getDirection()), this.op.getColor());
+		for(int i=0; i <this.allowOP.size() ; i++) {
+			if (this.allowOP.get(i).equals(opsitOp)) 
+				this.allowOP.remove(i);
+		}
+	}
+
+	/**
+	 * This function returns the reversed operation of a given operation
+	 * @return
+	 */
+	private Direction getReversedOp (Direction d) {
+		Direction rev = null;
+		switch (d) {
+		case R: 
+			rev = Direction.L;
+			break;
+		case U:
+			rev = Direction.D;
+			break;
+		case L: 
+			rev = Direction.R;
+			break;
+		case D:
+			rev = Direction.U;
+			break;
+		}
+		return rev;
+	}
+
 	//********************** simple getters
 	@Override
 	public Matrix_Variable[][] getStateMatrix() {

@@ -1,6 +1,6 @@
 package JunitTesting;
 
-import Algorithms.BFS;
+import Algorithms.IDA;
 import Colored_Matrix_Management.Color;
 import Colored_Matrix_Management.Matrix_Variable;
 import DataStructure.Direction;
@@ -43,8 +43,9 @@ public class ManegeAll {
 		
 		State_Node goal = new State_Node(goalState, op, 0, null);
 		
-		BFS bfs = new BFS(startState, goal);
-		State_Node ans = bfs.BFS();
+		IDA ida = new IDA(startState, goal);
+		State_Node ans = ida.IDA();
+		System.out.println(ida.countingNodes());
 		
 		outputTXT ooo=new outputTXT("afa", 2, 3, 234, false);
 	}

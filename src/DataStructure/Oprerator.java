@@ -6,6 +6,7 @@ package DataStructure;
  */
 
 import Colored_Matrix_Management.Color;
+import Colored_Matrix_Management.Matrix_Variable;
 
 public class Oprerator {
 
@@ -38,6 +39,28 @@ public class Oprerator {
 	public String toString() {
 		return "[" + num + direction +"]";
 	}
+
+	/**
+	 * This function checks if a given operation is equal to the this.operation 
+	 * or not
+	 * @param obj
+	 * @return
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj!=null&&(obj instanceof Oprerator)){
+			Oprerator op =(Oprerator) obj;
+
+			if(this.num != op.getNum()) 
+				return false;
+			if(this.color != op.getColor()) 
+				return false;
+			if(this.direction != op.getDirection()) 
+				return false;
+		}
+		return true;
+	}
+
 	//****************** Private Data *****************
 	private int num;
 	private Direction direction;

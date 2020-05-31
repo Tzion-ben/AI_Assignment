@@ -1,6 +1,6 @@
 package JunitTesting;
 
-import Algorithms.IDA;
+import Algorithms.Algorithems;
 import Colored_Matrix_Management.Color;
 import Colored_Matrix_Management.Matrix_Variable;
 import DataStructure.Direction;
@@ -15,12 +15,7 @@ public class ManegeAll {
 	public static void main(String[] args) {
 		initTXT tt =new initTXT("input.txt");
 		initMatrix start=new initMatrix(tt.getMatSIZE(), tt.getGame_Matrix(), tt.getBlackBlocks(), tt.getRedBloacks());
-		
-		System.out.println(tt.getMatSIZE());
-		System.out.println(tt.getBlackBlocks());		
-		System.out.println(tt.getRedBloacks());
-		System.out.println(tt.getGame_Matrix()+"\n");
-		
+			
 		Matrix_Variable [][] vv=start.getThePuzzle();
 		for(int i=0;i<vv.length;i++) {
 			for(int j=0;j<vv[0].length;j++) {
@@ -43,9 +38,14 @@ public class ManegeAll {
 		
 		State_Node goal = new State_Node(goalState, op, 0, null);
 		
-		IDA ida = new IDA(startState, goal);
-		State_Node ans = ida.IDA();
-		System.out.println(ida.countingNodes());
+		Algorithems algoRun = new Algorithems(startState, goal);
+		//State_Node ans = algoRun.A_Star();
+		//System.out.println("A* :"+algoRun.countingNodes());
+		
+		algoRun.zeroCountingNodes();
+		
+		State_Node ansBFS = algoRun.BFS();
+		System.out.println("BFS :"+algoRun.countingNodes());
 		
 		outputTXT ooo=new outputTXT("afa", 2, 3, 234, false);
 	}

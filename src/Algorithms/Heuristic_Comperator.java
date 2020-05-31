@@ -11,7 +11,7 @@ public class Heuristic_Comperator implements Comparator<State_Node> {
 	public Heuristic_Comperator() {;}
 	@Override
 	public int compare(State_Node o1, State_Node o2) {
-		int pr=o1.getH()-o2.getH();
-		return pr;
+		int F=o1.getF()-o2.getF();
+		return F;
 	}
 }

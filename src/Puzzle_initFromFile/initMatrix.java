@@ -90,7 +90,7 @@ public class initMatrix {
 	}
 
 	/************************************************************************************************
-	 * This function is initialize the Puzzle matrix/Board eith all numbers and there colors 
+	 * This function is initialize the Puzzle matrix/Board with all numbers and there colors 
 	 * @param Game_Matrix
 	 ************************************************************************************************/
 	private void initGame_Matrix(String Game_Matrix) {
@@ -116,8 +116,9 @@ public class initMatrix {
 					else if(this.GreenBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres]))) 
 						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.GREEN);
 
-					RunONstringMat_Integeres++;
+					
 				}
+				RunONstringMat_Integeres++;
 			}
 		}
 	}

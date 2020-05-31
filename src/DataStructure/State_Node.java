@@ -200,7 +200,7 @@ public class State_Node implements State_Data {
 				boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][1].getColor());
 				if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][1].getColor()));}
 			}
-			else if(j_ofSpace==(m-1)) {
+			if(j_ofSpace==(m-1)) {
 				boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][m-2].getColor());
 				if(l) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][m-2].getNum(),Direction.R, this.StateMatrix[i_ofSpace][m-2].getColor()));}
 			}
@@ -211,17 +211,20 @@ public class State_Node implements State_Data {
 		 */
 		else if(i_ofSpace>0 && i_ofSpace<n-1 && j_ofSpace>0 && j_ofSpace<m-1) {
 			boolean r=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor());
-			if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace+1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor()));}
+			if(r) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace+1].getNum(),Direction.L, this.StateMatrix[i_ofSpace][j_ofSpace+1].getColor()));}	
+			boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
+			if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
 			boolean l=getAllowORnot(this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor());
 			if(l) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace][j_ofSpace-1].getNum(),Direction.R, this.StateMatrix[i_ofSpace][j_ofSpace-1].getColor()));}
 			boolean u=getAllowORnot(this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor());
 			if(u) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace-1][j_ofSpace].getNum(),Direction.D, this.StateMatrix[i_ofSpace-1][j_ofSpace].getColor()));}
-			boolean d=getAllowORnot(this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor());
-			if(d) {this.allowOP.add(new Oprerator(this.StateMatrix[i_ofSpace+1][j_ofSpace].getNum(),Direction.U, this.StateMatrix[i_ofSpace+1][j_ofSpace].getColor()));}
 		}
 
 		//removes the reversed operation
 		removeReversedOp();
+
+		//ordering the operetions
+		orderTheOprerators();
 	}
 
 
@@ -389,6 +392,60 @@ public class State_Node implements State_Data {
 			break;
 		}
 		return rev;
+	}
+
+	/**
+	 * This function ordering the Operators depend on their directions L-left,U-up,R-right,D-down
+	 * @return
+	 */
+	private void orderTheOprerators(){
+		ArrayList<Oprerator> tempOp = new ArrayList<Oprerator>();
+		int SIZEbefore = this.allowOP.size();
+
+		//run on  all the operations and want to find the L and put them
+		//first at tempOp
+		if(!this.allowOP.isEmpty())
+			for(int i=0 ; i<this.allowOP.size() ; i++) {
+				if(this.allowOP.get(i).getDirection() == Direction.L) {
+					tempOp.add(this.allowOP.get(i));
+					this.allowOP.remove(i);
+				}
+			}
+
+		//run on  all the operations and want to find the U and put them
+		//second at tempOp
+		if(!this.allowOP.isEmpty())
+			for(int i=0 ; i<this.allowOP.size() ; i++) {
+				if(this.allowOP.get(i).getDirection() == Direction.U) {
+					tempOp.add(this.allowOP.get(i));
+					this.allowOP.remove(i);
+				}
+			}
+
+		//run on all the left of operations and want to find the R and put them
+		//3rd at tempOp
+		if(!this.allowOP.isEmpty())
+			for(int i=0 ; i<this.allowOP.size() ; i++) {
+				if(this.allowOP.get(i).getDirection() == Direction.R) {
+					tempOp.add(this.allowOP.get(i));
+					this.allowOP.remove(i);
+				}
+			}
+
+		//run on all the left of operations put tem last at tempOp, it is the D operations
+		if(!this.allowOP.isEmpty())
+			for(int i=0 ; i<this.allowOP.size() ; i++) {
+				tempOp.add(this.allowOP.get(i));
+				this.allowOP.remove(i);
+			}
+
+		//run on tempOp and put all the operations back to this.allowOperations
+		int i=0;
+		while(!tempOp.isEmpty()) {
+			this.allowOP.add(tempOp.get(i));
+			tempOp.remove(i);
+		}
+
 	}
 
 	//********************** simple getters

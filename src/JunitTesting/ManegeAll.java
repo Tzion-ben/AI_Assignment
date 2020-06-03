@@ -15,7 +15,7 @@ public class ManegeAll {
 	public static void main(String[] args) {
 		initTXT tt =new initTXT("input.txt");
 		initMatrix start=new initMatrix(tt.getMatSIZE(), tt.getGame_Matrix(), tt.getBlackBlocks(), tt.getRedBloacks());
-			
+
 		Matrix_Variable [][] vv=start.getThePuzzle();
 		for(int i=0;i<vv.length;i++) {
 			for(int j=0;j<vv[0].length;j++) {
@@ -23,7 +23,7 @@ public class ManegeAll {
 			}
 			System.out.println();
 		}
-		
+
 		Oprerator op = new Oprerator(-1, Direction.N, Color.E);
 		State_Node startState=new State_Node(start.getThePuzzle(), op, 0, null);
 		int k=1;
@@ -35,19 +35,46 @@ public class ManegeAll {
 			}
 		}
 		goalState[goalState.length-1][goalState[0].length-1].setNum(-1);
-		
+
 		State_Node goal = new State_Node(goalState, op, 0, null);
-		
+
 		Algorithems algoRun = new Algorithems(startState, goal);
 		//State_Node ans = algoRun.A_Star();
 		//System.out.println("A* :"+algoRun.countingNodes());
-		
+
 		algoRun.zeroCountingNodes();
-		
+
+		System.out.println();
 		State_Node ansBFS = algoRun.BFS();
-		System.out.println("BFS :"+algoRun.countingNodes());
+		System.out.println("BFS :"+algoRun.raiseNumberOfNodes());
+		System.out.println("cost:"+ansBFS.getF());
+		State_Node pos = ansBFS;
+		String ansPrint  = "";
+		while(pos!= null) {
+			ansPrint = pos.getOperation().toString()+ansPrint;
+			pos = pos.getFatherPointer();
+		}
+		System.out.println(ansPrint.substring(4));
+		System.out.println();
+
+		algoRun.zeroCountingNodes();
+
+		System.out.println();
+		State_Node ansDFID = algoRun.DFID();
+		System.out.println("DFID :"+algoRun.raiseNumberOfNodes());
+		System.out.println("cost :"+ansDFID.getF());
+		pos = ansDFID;
+		ansPrint="";
+		while(pos!= null) {
+			ansPrint = pos.getOperation().toString()+ansPrint;
+			pos = pos.getFatherPointer();
+		}
+		System.out.println(ansPrint.substring(4));
+		System.out.println();
 		
-		outputTXT ooo=new outputTXT("afa", 2, 3, 234, false);
+		
+		
+		//outputTXT ooo=new outputTXT("afa", 2, 3, 234, false);
 	}
 
 }

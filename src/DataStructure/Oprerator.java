@@ -37,7 +37,7 @@ public class Oprerator {
 
 	@Override
 	public String toString() {
-		return "[" + num + direction +"]";
+		return  num+""+""+direction+"-";
 	}
 
 	/**

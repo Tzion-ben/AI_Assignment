@@ -54,7 +54,7 @@ public interface State_Data{
 	 * @return a reference to the father of this State,
 	 * so that at the goal we can go back to find all the road, (The path).
 	 */
-	public State_Data getFatherPointer();
+	public State_Node getFatherPointer();
 
 	/** 
 	 * @return The operation that brings the state before to this state

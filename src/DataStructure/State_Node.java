@@ -16,6 +16,7 @@ public class State_Node implements State_Data {
 	 * have to be automatically step be step
 	 */
 	private void manageAllOperations() {
+		if(this.StateMatrix==null) {return;}
 		setStateMatrix();
 		setH();
 		setOprerators();
@@ -28,6 +29,7 @@ public class State_Node implements State_Data {
 	 */
 	@Override
 	public void setStateMatrix() {
+
 		boolean stop=false;
 
 		for(int i=0; i<this.StateMatrix.length&&!stop;i++) {
@@ -241,6 +243,9 @@ public class State_Node implements State_Data {
 			State_Node n=(State_Node) obj;
 			Matrix_Variable [][] n_Matrix=n.getStateMatrix();
 
+			if(this.StateMatrix == null && n_Matrix == null) {return true;}
+			if((this.StateMatrix == null && n_Matrix != null)||(this.StateMatrix != null && n_Matrix == null)) {return false;}
+
 			for(int i=0; i<this.StateMatrix.length ; i++) {
 				for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
 					if(this.StateMatrix[i][j].getNum() != n_Matrix[i][j].getNum()) {
@@ -343,6 +348,7 @@ public class State_Node implements State_Data {
 	 * @return
 	 */
 	private Hashtable<Integer, Psiotion> helpPositios() {
+		if(this.StateMatrix == null) {return null;}
 		Hashtable<Integer, Psiotion> realPos = new Hashtable<Integer, Psiotion>();
 		int i=0;
 		int j=0;
@@ -455,7 +461,7 @@ public class State_Node implements State_Data {
 	}
 
 	@Override
-	public State_Data getFatherPointer() {
+	public State_Node getFatherPointer() {
 		return this.fatherPointer;
 	}
 
@@ -482,7 +488,6 @@ public class State_Node implements State_Data {
 	public ArrayList<Oprerator>  getOprerators() {
 		return this.allowOP;
 	}
-
 
 	//****************** Private Data *****************
 

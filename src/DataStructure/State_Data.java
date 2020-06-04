@@ -8,7 +8,7 @@ import Colored_Matrix_Management.Matrix_Variable;
  * @author Tzion
  */
 public interface State_Data{
-
+	
 	/**
 	 * @return The matrix associated with the State, after setting it
 	 */

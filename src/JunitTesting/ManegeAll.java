@@ -1,5 +1,7 @@
 package JunitTesting;
 
+import java.util.concurrent.TimeUnit;
+
 import Algorithms.Algorithems;
 import Colored_Matrix_Management.Color;
 import Colored_Matrix_Management.Matrix_Variable;
@@ -8,7 +10,6 @@ import DataStructure.Oprerator;
 import DataStructure.State_Node;
 import Puzzle_initFromFile.initMatrix;
 import Puzzle_initFromFile.initTXT;
-import Puzzle_initFromFile.outputTXT;
 
 public class ManegeAll {
 
@@ -38,30 +39,49 @@ public class ManegeAll {
 
 		State_Node goal = new State_Node(goalState, op, 0, null);
 
+		
+
 		Algorithems algoRun = new Algorithems(startState, goal);
-		//State_Node ans = algoRun.A_Star();
-		//System.out.println("A* :"+algoRun.countingNodes());
+		//		State_Node ansA = algoRun.A_Star();
+		//		System.out.println("A* :"+algoRun.raiseNumberOfNodes());
+		//		System.out.println("cost:"+ansA.getF());		
+		//State_Node pos = ansA;
+		State_Node pos = null;
 
-		algoRun.zeroCountingNodes();
-
-		System.out.println();
-		State_Node ansBFS = algoRun.BFS();
-		System.out.println("BFS :"+algoRun.raiseNumberOfNodes());
-		System.out.println("cost:"+ansBFS.getF());
-		State_Node pos = ansBFS;
 		String ansPrint  = "";
 		while(pos!= null) {
 			ansPrint = pos.getOperation().toString()+ansPrint;
 			pos = pos.getFatherPointer();
 		}
-		System.out.println(ansPrint.substring(4));
+		//System.out.println(ansPrint.substring(4));
 		System.out.println();
-
 		algoRun.zeroCountingNodes();
 
 		System.out.println();
+		State_Node ansBFS = algoRun.BFS();
+		
+		//System.out.println("Time "+finalTime);
+		System.out.println("BFS :"+algoRun.raiseNumberOfNodes());
+
+		//System.out.println("cost:"+ansBFS.getF());
+		//pos = ansBFS;
+		ansPrint  = "";
+		while(pos!= null) {
+			ansPrint = pos.getOperation().toString()+ansPrint;
+			pos = pos.getFatherPointer();
+		}
+		//System.out.println(ansPrint.substring(4));
+		System.out.println();
+		System.out.println();
+
+		algoRun.zeroCountingNodes();
+		long startTime = System.currentTimeMillis();
+		System.out.println();
 		State_Node ansDFID = algoRun.DFID();
 		System.out.println("DFID :"+algoRun.raiseNumberOfNodes());
+		long endTime = System.currentTimeMillis();
+		double finalTime = (endTime-startTime)/1000.0;
+		System.out.println(finalTime+" sec ");
 		System.out.println("cost :"+ansDFID.getF());
 		pos = ansDFID;
 		ansPrint="";
@@ -71,9 +91,11 @@ public class ManegeAll {
 		}
 		System.out.println(ansPrint.substring(4));
 		System.out.println();
-		
-		
-		
+	
+
+
+
+
 		//outputTXT ooo=new outputTXT("afa", 2, 3, 234, false);
 	}
 

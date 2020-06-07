@@ -1,31 +1,48 @@
 package Puzzle_initFromFile;
 
 import java.util.Hashtable;
-import Colored_Matrix_Management.Color;
-import Colored_Matrix_Management.Matrix_Variable;
 
-/**
- * 
- * @author Tzion
- *
- */
+import DataStructure.Color;
+
 public class initMatrix {
 
-	/************************************************************************************************
-	 * This function is manage all the details of the Puzzle Game that came from the constructor 
+	/**
+	 * 
 	 * @param matSIZE
-	 * @param Game_Matrix
-	 * @param BlackBlocks
-	 * @param RedBloacks
-	 ************************************************************************************************/
-	private void initGame(String matSIZE, String Game_Matrix, String BlackBlocks, String RedBlocks) {
+	 * @param game_Matrix
+	 * @param blackBlocks
+	 * @param redBlocks
+	 */
+	private void initGame(String matSIZE, String game_Matrix, String blackBlocks, String redBlocks) {
 		initSIZE(matSIZE);
-		initBalckBlocks(BlackBlocks);
-		initRedBlocks(RedBlocks);
-		initGreenBlocks(BlackBlocks, RedBlocks);
+		this.BlocksColors = new Hashtable<Integer, Color>();
+		initBalckBlocks(blackBlocks);
+		initRedBlocks(redBlocks);
+		initGreenBlocks(blackBlocks, redBlocks);
 
 		//final step:
-		initGame_Matrix(Game_Matrix);
+		initGame_Matrix(game_Matrix);
+	}
+
+	/**
+	 * 
+	 * @param game_Matrix
+	 */
+	private void initGame_Matrix(String game_Matrix) {
+		this.ThePuzzle=new int[this.n][this.m];
+		String [] intArray=game_Matrix.split(",");
+
+		int RunONstringMat_Integeres=0;
+		for(int i=0;i<this.n;i++) {
+			for(int j=0;j<this.m;j++) {
+				if(intArray[RunONstringMat_Integeres].equals("_")) 
+					this.ThePuzzle[i][j]=0;
+				else 
+					this.ThePuzzle[i][j]=Integer.valueOf(intArray[RunONstringMat_Integeres]);
+
+				RunONstringMat_Integeres++;
+			}
+		}
 	}
 
 	/************************************************************************************************
@@ -44,11 +61,10 @@ public class initMatrix {
 	 * @param BalckBloacks
 	 ************************************************************************************************/
 	private void initBalckBlocks(String BlackBloacks) {
-		this.BlackBlocks=new Hashtable<Integer, Integer>();
 		if(BlackBloacks!=null) {
 			String [] tempBalck=BlackBloacks.split(",");
 			for(int i=0;i<tempBalck.length ;i++) {
-				this.BlackBlocks.put(Integer.valueOf(tempBalck[i]), Integer.valueOf(tempBalck[i]));
+				this.BlocksColors.put(Integer.valueOf(tempBalck[i]), Color.BLACK);
 			}
 		}
 	}
@@ -59,11 +75,10 @@ public class initMatrix {
 	 * @param RedBloacks
 	 ************************************************************************************************/
 	private void initRedBlocks(String RedBlocks) {
-		this.RedBlocks=new Hashtable<Integer, Integer>();
 		if(RedBlocks!=null) {
 			String [] tempRed=RedBlocks.split(",");
 			for(int i=0;i<tempRed.length ;i++) {
-				this.RedBlocks.put(Integer.valueOf(tempRed[i]), Integer.valueOf(tempRed[i]));
+				this.BlocksColors.put(Integer.valueOf(tempRed[i]), Color.RED);
 			}
 		}
 	}
@@ -77,81 +92,35 @@ public class initMatrix {
 	 * @param RedBloacks
 	 ************************************************************************************************/
 	private void initGreenBlocks(String BlackBlocks, String RedBlocks) {
-		this.GreenBlocks=new Hashtable<Integer, Integer>();
-		if(BlackBlocks==null && BlackBlocks==null) {
-			for(int i=1;i<=this.n*this.m ;i++) 
-				this.GreenBlocks.put(i,i);
-		}
-		else {
-			for(int i=1;i<=this.n*this.m ;i++) 
-				if(!this.BlackBlocks.containsKey(i) && !this.RedBlocks.containsKey(i))
-					this.GreenBlocks.put(i,i);
-		}
+		for(int i=1;i<=this.n*this.m ;i++) 
+			if(!this.BlocksColors.containsKey(i))
+				this.BlocksColors.put(i,Color.GREEN);
 	}
 
-	/************************************************************************************************
-	 * This function is initialize the Puzzle matrix/Board with all numbers and there colors 
-	 * @param Game_Matrix
-	 ************************************************************************************************/
-	private void initGame_Matrix(String Game_Matrix) {
-		this.ThePuzzle=new Matrix_Variable[this.n][this.m];
-		String [] intArray=Game_Matrix.split(",");
-
-		int RunONstringMat_Integeres=0;
-		for(int i=0;i<this.n;i++) {
-			for(int j=0;j<this.m;j++) {
-				if(intArray[RunONstringMat_Integeres].equals("_")) {
-					this.ThePuzzle[i][j]=new Matrix_Variable(-1, Color.E);
-				}
-				else {
-					//if the color of the block with that number is Black
-					if(this.BlackBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres])))
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.BLACK);
-
-					//if the color of the block with that number is Red
-					else if(this.RedBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres]))) 
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.RED);
-
-					//if the color of the block with that number is Green
-					else if(this.GreenBlocks.containsKey(Integer.valueOf(intArray[RunONstringMat_Integeres]))) 
-						this.ThePuzzle[i][j]=new Matrix_Variable(Integer.valueOf(intArray[RunONstringMat_Integeres]), Color.GREEN);
-
-					
-				}
-				RunONstringMat_Integeres++;
-			}
-		}
+	//simple getter
+	public int getN() {
+		return n;
 	}
 
-
-	//Only regular Getters
-	public Matrix_Variable[][] getThePuzzle() {
-		return this.ThePuzzle;
+	public int getM() {
+		return m;
 	}
 
-	public Hashtable<Integer, Integer> getBlackBlocks() {
-		return BlackBlocks;
+	public int[][] getThePuzzle() {
+		return ThePuzzle;
 	}
 
-	public Hashtable<Integer, Integer> getRedBlocks() {
-		return RedBlocks;
+	public Hashtable<Integer, Color> getBlocksColors() {
+		return BlocksColors;
 	}
-
-	public Hashtable<Integer, Integer> getGreenBlocks() {
-		return GreenBlocks;
-	}
-
 
 	//****************** Private Data *****************
 	private int n;//numbers of the rows
 	private int m;//numbers of the columns
-	private Matrix_Variable [][] ThePuzzle;
+	private int [][] ThePuzzle;
 
 	//For each number, to get the color of the number at the Puzzle, it will be O(1)
-	private Hashtable<Integer, Integer> BlackBlocks;
-	private Hashtable<Integer, Integer> RedBlocks;
-	private Hashtable<Integer, Integer> GreenBlocks;
-
+	private Hashtable<Integer, Color> BlocksColors;
 
 	//****************** Constructors *****************
 	public initMatrix(String matSIZE, String Game_Matrix, String BlackBlocks, String RedBlocks) {

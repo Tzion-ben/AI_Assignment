@@ -1,4 +1,4 @@
-package Colored_Matrix_Management;
+package DataStructure;
 /**
  * This enum is to set the colors of every block of each number
  * E->for the empty block

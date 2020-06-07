@@ -1,11 +1,10 @@
-package Algorithms;
+package DataStructure;
 /**
  * This comparator is for the Priority Queue that will be used at the Algorithms
  * It's will create a order of states based on their Heuristic Function   
  * @author Tzion
  */
 import java.util.Comparator;
-import DataStructure.State_Node;
 
 public class Heuristic_Comperator implements Comparator<State_Node> {
 	public Heuristic_Comperator() {;}

@@ -2,6 +2,8 @@ package DataStructure;
 
 import java.util.Hashtable;
 
+import Tools.*;
+
 public class State_Node {
 	/**
 	 * this function is manage all the operations in the state that
@@ -141,9 +143,9 @@ public class State_Node {
 		else {
 			h=this.h;
 			int numToOp=this.numDirection;
+			int colum = this.StateMatrix[0].length;
 			//find's the real i and j of the number that need to move
-			for(int k=0 ; k<=numToOp ; k++) {
-				int colum = this.StateMatrix[0].length;
+			for(int k=1 ; k<=numToOp ; k++) {
 				goal_j = now_j;
 				goal_i = now_i;
 				now_j++;//the columns runs
@@ -311,32 +313,6 @@ public class State_Node {
 	//****************** Public methods *****************
 
 	/**
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	public boolean equals(Object obj) {
-		if(obj!=null&&(obj instanceof State_Node)){
-			State_Node n=(State_Node) obj;
-			int [][] n_Matrix=n.getStateMatrix();
-
-			if(this.StateMatrix == null && n_Matrix == null) {return true;}
-			if((this.StateMatrix == null && n_Matrix != null)||(this.StateMatrix != null && n_Matrix == null)) {return false;}
-
-			for(int i=0; i<this.StateMatrix.length ; i++) {
-				for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
-					if(this.StateMatrix[i][j] != n_Matrix[i][j]) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
-
-	/**
 	 * This function create a deep Copy of the given matrix state, so the new state won't
 	 * ruin the matrix of an existent father state of it   
 	 * @return
@@ -347,15 +323,6 @@ public class State_Node {
 			for(int j=0 ; j<newStateMat[0].length ; j++) 
 				newStateMat[i][j]=this.StateMatrix[i][j];
 		return newStateMat;
-	}
-
-	/**
-	 * this function is sets the operator of the state if the algorithem found a more better path
-	 * to this state
-	 */
-	public void setOpretor (String op) {
-		this.op=op;
-		setOperation();
 	}
 
 	//*************************** Private Methods *********************************
@@ -385,110 +352,6 @@ public class State_Node {
 	}
 
 	/**
-	 * this function return the "color" of a given number from the matrix game of the state
-	 */
-	private Color getColor(int num) {
-		if(num==0) {return Color.E;}
-		while(!this.numbersColors.isEmpty()) 
-			if(this.numbersColors.containsKey(num)) 
-				return this.numbersColors.get(num);
-		return null;
-	}
-
-	/**
-	 * this method checks the color of the block and says if this block can move or 
-	 * not: RED and GRENN - can move, BLACK - can't move 
-	 * @param color c
-	 * @return
-	 */
-	private boolean getAllowORnot(Color c) {
-		boolean ans=false;
-		switch (c) {
-		case RED:
-		case GREEN:
-			ans=true;
-			break;
-		case BLACK:
-			ans=false;
-			break;
-		}
-		return ans;
-	}
-
-	/**
-	 * this method return the cost to move a block depend on it's color, RED->30
-	 * GREEN->1, BLACK->can't move so 0 , E-> for the start state
-	 * @return cost depend on the color
-	 */
-	private int getCost (Color c){
-		int cost=0;
-		switch (c) {
-		case RED:
-			cost=30;
-			break;
-		case GREEN:
-			cost=1;
-			break;
-		case BLACK:
-			cost=0;
-			break;
-		case E:
-			cost=0;
-			break;
-		}
-		return cost;
-	}
-
-	/**
-	 * This function removes from the allow operator of this state the operation
-	 * that is reversed to the operation that create this state  
-	 */
-	private void removeReversedOp () {
-		Direction opsitOp = getReversedOp(this.direction);
-		for(int i=0; i <4 ; i++) {
-			if(this.allowOP.containsKey(i)) {
-				String toCut = this.allowOP.get(i);
-				String [] opertion = toCut.split("-");
-				if (Direction.valueOf(opertion[1]).compareTo(opsitOp) == 0 ) 
-					this.allowOP.remove(i);
-			}
-		}
-	}
-
-	/**
-	 * This function returns the reversed operation of a given operation
-	 * @return
-	 */
-	private Direction getReversedOp (Direction d) {
-		Direction rev = null;
-		switch (d) {
-		case R: 
-			rev = Direction.L;
-			break;
-		case U:
-			rev = Direction.D;
-			break;
-		case L: 
-			rev = Direction.R;
-			break;
-		case D:
-			rev = Direction.U;
-			break;
-		}
-		return rev;
-	}
-
-	/**
-	 * This function gets the opertion string and cut it to number and Direction
-	 * @return
-	 */
-	private void setOperation() {
-		String [] opertion = this.op.split("-");
-		this.numDirection = Integer.valueOf(opertion[0]);
-		this.direction = Direction.valueOf(opertion[1]);
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
@@ -502,67 +365,94 @@ public class State_Node {
 		}
 	}
 
+	//********************************** Operator Functions ***********************************
+	/**
+	 * returns the string assisted with this matrix state, for the hash Table of the Algorithms
+	 * @return
+	 */
+	public String hash () {return helpOperator.hash(this.StateMatrix);}
+
+	/**
+	 * This function removes from the allow operator of this state the operation
+	 * that is reversed to the operation that create this state  
+	 */
+	private void removeReversedOp () {directionHelper.RemoveReversedOp(this.direction, allowOP);}
+
+	//************************************ Color Functions ************************************
+
+	/**
+	 * this method return the cost to move a block depend on it's color, RED->30
+	 * GREEN->1, BLACK->can't move so 0 , E-> for the start state
+	 * @return cost depend on the color
+	 */
+	private int getCost (Color c){return colorValidator.getCost(c);}
+
+	/**
+	 * this function return the "color" of a given number from the matrix game of the state
+	 */
+	private Color getColor(int num) {return colorValidator.getColor(num);}
+
+	/**
+	 * this method checks the color of the block and says if this block can move or 
+	 * not: RED and GRENN - can move, BLACK - can't move 
+	 * @param color c
+	 * @return
+	 */
+	private boolean getAllowORnot(Color c) {return colorValidator.getAllowORnot(c);}
 
 	//********************** simple getters and setters
 
-	public int[][] getStateMatrix() {
-		return this.StateMatrix;
+	public int[][] getStateMatrix() {return this.StateMatrix;}
+
+	public State_Node getFatherPointer() {return this.fatherPointer;}
+
+	public int getF() {return this.f;}
+
+	public int getH() {return this.h;}
+
+	public int getG() {return this.g;}
+
+	public int getMinouOne_i() {return minouOne_i;}
+
+	public int getMinouOne_j() {return minouOne_j;}
+
+	public String getOperation() {return this.op;}
+
+	public Hashtable<Integer, String> getOprerators() {return this.allowOP;}
+
+	public Hashtable<Integer, Color> getNumbersColors() {return numbersColors;}
+
+	public int getNumDirection() {return this.numDirection;}
+
+	public Direction getDirection() {return this.direction;}	
+
+	public void setNumDirection(int num) {this.numDirection=num;}
+
+	public String getPathSoFar() {return PathSoFar;}
+
+	public int getSumPat() {return sumPat;}
+
+	//****************** Not simple getters and setters
+
+	/**
+	 * This function gets the opertion string and cut it to number and Direction
+	 * @return
+	 */
+	private void setOperation() {
+		String [] opertion = this.op.split("-");
+		this.numDirection = Integer.valueOf(opertion[0]);
+		this.direction = Direction.valueOf(opertion[1]);
 	}
 
-	public State_Node getFatherPointer() {
-		return this.fatherPointer;
-	}
+	//****************** Help Classes *****************
 
-	public int getF() {
-		return this.f;
-	}
-
-	public int getH() {
-		return this.h;
-	}
-
-	public int getG() {
-		return this.g;
-	}
-
-	public int getMinouOne_i() {
-		return minouOne_i;
-	}
-
-	public int getMinouOne_j() {
-		return minouOne_j;
-	}
-
-	public String getOperation() {
-		return this.op;
-	}
-
-	public Hashtable<Integer, String> getOprerators() {
-		return this.allowOP;
-	}
-
-	public Hashtable<Integer, Color> getNumbersColors() {
-		return numbersColors;
-	}
-
-	public int getNumDirection() {
-		return this.numDirection;
-	}
-
-	public Direction getDirection() {
-		return this.direction;
-	}	
-
-	public void setNumDirection(int num) {
-		this.numDirection=num;
-	}
-
-	public String getPathSoFar() {
-		return PathSoFar;
-	}
-
-	public int getSumPat() {
-		return sumPat;
+	/**
+	 * This function sets a classes that will help as to work with the node state
+	 */
+	private void setTools () {
+		helpOperator = new OpertionHelper();
+		colorValidator = new ColorValidator(this.numbersColors);
+		directionHelper = new DirectionHelper();
 	}
 
 	//****************** Private Data *****************
@@ -587,19 +477,12 @@ public class State_Node {
 	private Hashtable<Integer, Color> numbersColors;
 	private Hashtable<Integer, String> allowOP;
 
+	private OpertionHelper helpOperator;
+	private ColorValidator colorValidator;
+	private DirectionHelper directionHelper;
+
 	//****************** Constructors *****************
 
-	/**
-	 * contractor oonly for the start and goal state 
-	 * @param StateMatrix
-	 * @param numbersColors
-	 * @param op
-	 * @param g
-	 * @param h
-	 * @param fatherPointer
-	 * @param minouOne_i
-	 * @param minouOne_j
-	 */
 	public State_Node(int [][] StateMatrix, Hashtable<Integer, Color> numbersColors , String op, int g, int h,
 			State_Node fatherPointer, int minouOne_i, int minouOne_j, String PathSoFar) {
 		this.StateMatrix=StateMatrix;
@@ -616,31 +499,7 @@ public class State_Node {
 		this.PathSoFar = PathSoFar;
 		SetPathSoFar();
 
+		setTools();
 		manageAllOperations();
 	}
-
-	/**
-	 * contractor for all the states exept the start and goal state 
-	 * @param StateMatrix
-	 * @param op
-	 * @param g
-	 * @param h
-	 * @param fatherPointer
-	 * @param minouOne_i
-	 * @param minouOne_j
-	 */
-	public State_Node(int [][] StateMatrix, String op, int g, int h,
-			State_Node fatherPointer, int minouOne_i, int minouOne_j,String PathSoFar) {
-		this.StateMatrix=StateMatrix;
-		this.op=op;
-		this.fatherPointer=fatherPointer;
-		this.g=g;
-		this.h=h;
-
-		this.minouOne_i=minouOne_i;
-		this.minouOne_j=minouOne_j;
-
-		manageAllOperations();
-	}
-
 }

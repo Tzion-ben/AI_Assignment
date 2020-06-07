@@ -35,27 +35,35 @@ public class Menage_And_Run_All {
 
 		State_Node goal = new State_Node(goalState,start.getBlocksColors(), op, 0,0, null,goalState.length-1,goalState[0].length-1,null);
 
-
+		long startTime=0 ,endTime = 0;
+		double finalTime=0;
 
 		BFS BFS = new BFS(startState, goal);
 		System.out.println();
-		long startTime = System.currentTimeMillis();
-		State_Node ansBFS = BFS.BFS();
-		long endTime = System.currentTimeMillis();
-		double finalTime = (endTime-startTime)/1000.0;
+		startTime = System.currentTimeMillis();
+		State_Node ansBFS = BFS.Search_Goal_Algorithm();
+		endTime = System.currentTimeMillis();
+		finalTime = (endTime-startTime)/1000.0;
 		System.out.println(finalTime+" sec ");
 		System.out.println("BFS :"+BFS.getNodesNum());
 		System.out.println("cost:"+ansBFS.getF());
-		State_Node pos = ansBFS;
 		String ansPrint  = ansBFS.getPathSoFar();
-//		while(pos!= null) {
-//			ansPrint = pos.getNumDirection()+""+pos.getDirection()+"-"+ansPrint;
-//			pos = pos.getFatherPointer();
-//		}
-		ansPrint.lastIndexOf("-");
-		
 		System.out.println(ansPrint);
 		
+		
+		
+		Algorithems DFID = new Algorithems(startState, goal);
+		System.out.println();
+		startTime = System.currentTimeMillis();
+		State_Node ansAStar = DFID.DFID();
+		endTime = System.currentTimeMillis();
+		finalTime = (endTime-startTime)/1000.0;
+		System.out.println(finalTime+" sec ");
+		System.out.println("DFID :"+DFID.getNodesNum());
+		System.out.println("cost:"+ansAStar.getF());
+		String ansPrintA_Star  = ansAStar.getPathSoFar();
+		System.out.println(ansPrintA_Star);
+
 
 	}
 

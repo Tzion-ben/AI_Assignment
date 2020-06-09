@@ -2,6 +2,7 @@ package DataStructure;
 
 import java.util.Hashtable;
 
+
 import Tools.*;
 
 public class State_Node {
@@ -24,159 +25,43 @@ public class State_Node {
 
 	public void setStateMatrix() {
 
-		//it's means it's the start state
 		if(this.direction == Direction.N) {
-			setH(0,0,0,0);//start 
 			//Initialize for the start state ti i and j of the "-" marekd as 0
 			setFirstMinus_I_J();
+			setH();
 		}
 
-		//else --> all the state after the start state
-		else {
-			int i = 0 , j = 0;
+		//moves the number of the operator to the location of 0
+		this.StateMatrix[this.minouOne_i][this.minouOne_j]=this.numDirection;
+		//now need to put the -1 at the location of the operator
+		switch (this.direction) {
+		case R:
+			setMinus_Loctions(this.minouOne_i , this.minouOne_j-1);
+			this.minouOne_j-=1;
+			break;
+		case D:
+			setMinus_Loctions(this.minouOne_i-1 , this.minouOne_j);
+			this.minouOne_i-=1;
+			break;
+		case L:
+			setMinus_Loctions(this.minouOne_i , this.minouOne_j+1);
+			this.minouOne_j+=1;
+			break;
+		case U:
+			setMinus_Loctions(this.minouOne_i+1 , this.minouOne_j);
+			this.minouOne_i+=1;
+			break;
 
-			//moves the number of the operator to the location of 0
-			this.StateMatrix[this.minouOne_i][this.minouOne_j]=this.numDirection;
-
-			//now need to put the -1 at the location of the operator
-			switch (this.direction) {
-			case R:
-				i=this.minouOne_i ; j=this.minouOne_j;
-				setMinus_Loctions(this.minouOne_i , this.minouOne_j-1);
-				this.minouOne_j-=1;
-				setH(i, j-1, i, j);
-				break;
-			case D:
-				i=this.minouOne_i ; j=this.minouOne_j;
-				setMinus_Loctions(this.minouOne_i-1 , this.minouOne_j);
-				this.minouOne_i-=1;
-				setH(i-1, j, i, j);
-				break;
-			case L:
-				i=this.minouOne_i ; j=this.minouOne_j;
-				setMinus_Loctions(this.minouOne_i , this.minouOne_j+1);
-				this.minouOne_j+=1;
-				setH(i, j+1, i, j);
-				break;
-			case U:
-				i=this.minouOne_i ; j=this.minouOne_j;
-				setMinus_Loctions(this.minouOne_i+1 , this.minouOne_j);
-				this.minouOne_i+=1;
-				setH(i+1, j, i, j);
-				break;
-			}
 		}
+		setH();
+
 	}
-
 
 	/**
 	 * this function calculate the heuristic function of this state based on the "Manhattan Distance" 
 	 */
-
-	public void setH(int oldLoc_i, int oldLoc_j,int newLoc_i , int newLoc_j) {
-		int h=0;
-		int goal_i=0, goal_j=0, now_i=0, now_j=0;
-		int stepsForI=0, stepsForJ=0;
-		int SIZE = this.StateMatrix.length*this.StateMatrix[0].length;
-
-		/**
-		 * it's mean's that it's that it's the start state, so it have to calculate all the matrix
-		 * for the H function
-		 */
-		if(this.direction == Direction.N) {
-			int colum = this.StateMatrix[0].length;
-			for(int k=1 ; k<=SIZE ; k++ ) {
-				goal_j = now_j;
-				goal_i = now_i;
-				now_j++;//the columns runs
-
-				//if k divided be now_i that it's the number of the row so it mean's it's
-				//the last location of the row 
-				if(k/(now_i+1) == colum) {  //a new line at the goal matrix so i++ and j=0
-					now_i++;
-					now_j=0;
-				}
-
-
-				for(int i=0;i<this.StateMatrix.length;i++) {
-					for(int j=0; j<this.StateMatrix[0].length;j++) {
-
-						//if it's not the -1 Label that represent "_" : a empty block
-						if(this.StateMatrix[i][j]!=0) {
-							if(this.StateMatrix[i][j] == k) {
-
-								//how many steps have to do to put the number at his position 
-								//for the h function
-								stepsForI=goal_i-i;
-								stepsForJ=goal_j-j;
-
-								//returns the cost of the block to move
-								Color colorToCosr = getColor(this.StateMatrix[i][j]);
-								int costColor= getCost(colorToCosr);
-
-								//calculate steps for rows+columns
-								int cost=(Math.abs(stepsForI)+Math.abs(stepsForJ))*costColor;
-
-								//added it to the h function until now
-								h+=cost;
-
-								j=this.StateMatrix[0].length;
-								i=this.StateMatrix.length;
-							}
-						}
-
-						//else --> found the place of 0, want to save it 
-						else if(this.StateMatrix[i][j]==0) {
-							this.minouOne_i=i;
-							this.minouOne_j=j;
-						}
-
-						//returns the moveCounters to start position
-						stepsForI=0;
-						stepsForJ=0;
-					}
-				}
-			}
-		}
-		//else --> it's state that isn't start and i can work with the privies H and just make a 
-		//change depend on the opertion
-		else {
-			h=this.h;
-			int numToOp=this.numDirection;
-			int colum = this.StateMatrix[0].length;
-			//find's the real i and j of the number that need to move
-			for(int k=1 ; k<=numToOp ; k++) {
-				goal_j = now_j;
-				goal_i = now_i;
-				now_j++;//the columns runs
-
-				//if k divided be now_i that it's the number of the row so it mean's it's
-				//the last location of the row 
-				if(k/(now_i+1) == colum) {  //a new line at the goal matrix so i++ and j=0
-					now_i++;
-					now_j=0;
-				}
-			}
-
-			//returns the cost of the block to move (for the new and old is't the same price
-			Color colorToCosr = getColor(this.StateMatrix[newLoc_i][newLoc_j]);
-			int costColor= getCost(colorToCosr);
-
-			int oldStemps_H_i=goal_i-oldLoc_i;
-			int oldStemps_H_j=goal_j-oldLoc_j;
-			//calculate the "old" steps for rows+columns
-			int oldCost=(Math.abs(oldStemps_H_i)+Math.abs(oldStemps_H_j))*costColor;
-
-			int newStemps_H_i=goal_i-newLoc_i;
-			int newStemps_H_j=goal_j-newLoc_j;
-			//calculate the "new" steps for rows+columns
-			int newCost=(Math.abs(newStemps_H_i)+Math.abs(newStemps_H_j))*costColor;
-
-			h-=oldCost;
-			h+=newCost;
-
-		}
-		this.h=h;
+	public void setH() {
+		this.h=helpOperator.setH(this.StateMatrix, this.direction);
 		setG();
 	}
 
@@ -194,17 +79,13 @@ public class State_Node {
 	/**
 	 * Sets the f of the state to be h+g, send the h and g that calculated so far
 	 */
-	public void setF() {
-		this.f=this.h+this.g;
-	}
+	public void setF() {this.f=this.h+this.g;}
 
 	/**
 	 * this function sets all the operators that allows on this state
 	 */
-
 	public void setOprerators() {
 		this.allowOP = new Hashtable<Integer, String>();
-		Color colorToCheck=null;
 
 		//will hold the position of the Label 0 that represent the empty block :"_" 
 		int i_ofSpace=this.minouOne_i;
@@ -221,32 +102,28 @@ public class State_Node {
 		 */
 		if(i_ofSpace==0 ||i_ofSpace==n-1) {
 			if(j_ofSpace>0 && j_ofSpace<(m-1)) {
-				//for the right side of the space block
-				colorToCheck = getColor(this.StateMatrix[i_ofSpace][j_ofSpace+1]);
-				boolean r=getAllowORnot(colorToCheck);
-				if(r) {this.allowOP.put(0,String.valueOf(this.StateMatrix[i_ofSpace][j_ofSpace+1])+"-"+Direction.L);}
 
-				//for the left side of the space block
-				colorToCheck = getColor(this.StateMatrix[i_ofSpace][j_ofSpace-1]);
-				boolean l=getAllowORnot(colorToCheck);
-				if(l) {this.allowOP.put(2,String.valueOf(this.StateMatrix[i_ofSpace][j_ofSpace-1])+"-"+Direction.R);}
+				//for the right side of the space block
+				boolean r= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,j_ofSpace+1);
+				if (r) {setAllowOperator(i_ofSpace, j_ofSpace+1, Direction.L);}
+
+				//for the left side of the space block		
+				boolean l= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,j_ofSpace-1);
+				if (l) {setAllowOperator(i_ofSpace, j_ofSpace-1, Direction.R);}
 			}
 
 			//the up or down operation
 			if(i_ofSpace==0) {
 				//for the down side of the space block
-				colorToCheck = getColor(this.StateMatrix[1][j_ofSpace]);
-				boolean d=getAllowORnot(colorToCheck);
-				if(d) {this.allowOP.put(1,String.valueOf(this.StateMatrix[1][j_ofSpace])+"-"+Direction.U);}
+				boolean d= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,1,j_ofSpace);
+				if (d) {setAllowOperator(1, j_ofSpace, Direction.U);}
 			}
 			//for the up side of the space block
 			else if(i_ofSpace==(n-1)) {
-				colorToCheck = getColor(this.StateMatrix[n-2][j_ofSpace]);
-				boolean u=getAllowORnot(colorToCheck);
-				if(u) {this.allowOP.put(3,String.valueOf(this.StateMatrix[n-2][j_ofSpace])+"-"+Direction.D);}
+				boolean u= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,n-2,j_ofSpace);
+				if (u) {setAllowOperator(n-2, j_ofSpace, Direction.D);}
 			}
 		}
-
 
 		/**
 		 * if the 0 Label is at the mat[0...n-1][0](first column) or mat[0...n-1][m-1](last column), so will always check the up
@@ -255,28 +132,24 @@ public class State_Node {
 		if(j_ofSpace==0 ||j_ofSpace==m-1) {
 			if(i_ofSpace>0 && i_ofSpace<(n-1)) {
 				//for the down side of the space block
-				colorToCheck = getColor(this.StateMatrix[i_ofSpace+1][j_ofSpace]);
-				boolean d=getAllowORnot(colorToCheck);
-				if(d) {this.allowOP.put(1,String.valueOf(this.StateMatrix[i_ofSpace+1][j_ofSpace])+"-"+Direction.U);}
+				boolean d= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace+1,j_ofSpace);
+				if (d) {setAllowOperator(i_ofSpace+1, j_ofSpace, Direction.U);}
 
 				//for the up side of the space block
-				colorToCheck = getColor(this.StateMatrix[i_ofSpace-1][j_ofSpace]);
-				boolean u=getAllowORnot(colorToCheck);
-				if(u) {this.allowOP.put(3,String.valueOf(this.StateMatrix[i_ofSpace-1][j_ofSpace])+"-"+Direction.D);}
+				boolean u= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace-1,j_ofSpace);
+				if (u) {setAllowOperator(i_ofSpace-1, j_ofSpace, Direction.D);}
 			}
 
 			//the right or left operation
 			if(j_ofSpace==0) {
 				//for the left side of the space block
-				colorToCheck = getColor((this.StateMatrix[i_ofSpace][1]));
-				boolean r=getAllowORnot(colorToCheck);
-				if(r) {this.allowOP.put(0,String.valueOf(this.StateMatrix[i_ofSpace][1])+"-"+Direction.L);}
+				boolean r= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,1);
+				if (r) {setAllowOperator(i_ofSpace, 1, Direction.L);}
 			}
 			if(j_ofSpace==(m-1)) {
 				//for the left side of the space block
-				colorToCheck = getColor((this.StateMatrix[i_ofSpace][m-2]));
-				boolean l=getAllowORnot(colorToCheck);
-				if(l) {this.allowOP.put(2,String.valueOf(this.StateMatrix[i_ofSpace][m-2])+"-"+Direction.R);}
+				boolean l= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,m-2);
+				if (l) {setAllowOperator(i_ofSpace, m-2, Direction.R);}
 			}
 		}
 
@@ -285,29 +158,22 @@ public class State_Node {
 		 */
 		else if(i_ofSpace>0 && i_ofSpace<n-1 && j_ofSpace>0 && j_ofSpace<m-1) {
 			//for the right side of the space block
-			colorToCheck = getColor((this.StateMatrix[i_ofSpace][j_ofSpace+1]));
-			boolean r=getAllowORnot(colorToCheck);
-			if(r) {this.allowOP.put(0,String.valueOf(this.StateMatrix[i_ofSpace][j_ofSpace+1])+"-"+Direction.L);}	
+			boolean r= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,j_ofSpace+1);
+			if (r) {setAllowOperator(i_ofSpace, j_ofSpace+1, Direction.L);}
 
 			//for the down side of the space block
-			colorToCheck = getColor((this.StateMatrix[i_ofSpace+1][j_ofSpace]));
-			boolean d=getAllowORnot(colorToCheck);
-			if(d) {this.allowOP.put(1,String.valueOf(this.StateMatrix[i_ofSpace+1][j_ofSpace])+"-"+Direction.U);}
+			boolean d= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace+1,j_ofSpace);
+			if (d) {setAllowOperator(i_ofSpace+1, j_ofSpace, Direction.U);}
 
 			//for the left side of the space block
-			colorToCheck = getColor((this.StateMatrix[i_ofSpace][j_ofSpace-1]));
-			boolean l=getAllowORnot(colorToCheck);
-			if(l) {this.allowOP.put(2,String.valueOf(this.StateMatrix[i_ofSpace][j_ofSpace-1])+"-"+Direction.R);}
+			boolean l= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace,j_ofSpace-1);
+			if (l) {setAllowOperator(i_ofSpace, j_ofSpace-1, Direction.R);}
+
 
 			//for the left side of the space block
-			colorToCheck = getColor((this.StateMatrix[i_ofSpace-1][j_ofSpace]));
-			boolean u=getAllowORnot(colorToCheck);
-			if(u) {this.allowOP.put(3,String.valueOf(this.StateMatrix[i_ofSpace-1][j_ofSpace])+"-"+Direction.D);}
+			boolean u= directionHelper.locationToOperetors(this.StateMatrix,this.numbersColors,i_ofSpace-1,j_ofSpace);
+			if (u) {setAllowOperator(i_ofSpace-1, j_ofSpace, Direction.D);}
 		}
-
-		if(this.direction != Direction.N)
-			//removes the reversed operation
-			removeReversedOp();
 	}
 
 	//****************** Public methods *****************
@@ -328,30 +194,6 @@ public class State_Node {
 	//*************************** Private Methods *********************************
 
 	/**
-	 * this function set the i and j of the "_", that merks as 0 to a given i and j
-	 */
-	private void setMinus_Loctions(int new_i, int new_j) {
-		this.StateMatrix[new_i][new_j]=0;		
-	}
-
-	/**
-	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
-	 * @return array wit the i and j of the 0
-	 */
-	private void setFirstMinus_I_J() {
-		boolean stop=false;	
-		for(int i=0 ; i<this.StateMatrix.length && !stop ; i++) {
-			for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
-				if (this.StateMatrix[i][j] == 0) {
-					this.minouOne_i=i;
-					this.minouOne_j=j;
-					stop=true;
-				}
-			}
-		}
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
@@ -364,22 +206,41 @@ public class State_Node {
 			this.PathSoFar=this.PathSoFar+opertionSoFar[0]+opertionSoFar[1]+"-";
 		}
 	}
+	//********************************** Help to H Function ***********************************
+	/**
+	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
+	 * @return array wit the i and j of the 0
+	 */
+	private void setFirstMinus_I_J() {
+		int [] spcace_pos = helpOperator.setMinus_I_J(this.StateMatrix);
+		this.minouOne_i=spcace_pos[0];
+		this.minouOne_j=spcace_pos[1];
+	}
+
+	/**
+	 * this function set the i and j of the "_", that marks as 0 to a given i and j
+	 */
+	private void setMinus_Loctions(int new_i, int new_j) {this.StateMatrix[new_i][new_j]=0;}
 
 	//********************************** Operator Functions ***********************************
 	/**
 	 * returns the string assisted with this matrix state, for the hash Table of the Algorithms
 	 * @return
 	 */
-	public String hash () {return helpOperator.hash(this.StateMatrix);}
+	public int key () {return helpOperator.key(this.StateMatrix);}
 
 	/**
-	 * This function removes from the allow operator of this state the operation
-	 * that is reversed to the operation that create this state  
+	 * This function add the operator to the HashTable of the operators if and only if that new 
+	 * operator is NOT the revers of this.direction
 	 */
-	private void removeReversedOp () {directionHelper.RemoveReversedOp(this.direction, allowOP);}
+	private void setAllowOperator(int i, int j, Direction D) {
+		int direction_ID = directionHelper.getDirection_Id(D);
+		//if and only if the direction of the new operator is NOT reversed direction
+		if(!directionHelper.getReversedOp(D).equals(this.direction))
+			this.allowOP.put(direction_ID,directionHelper.nextOperation(this.StateMatrix, i, j, D));
+	}
 
 	//************************************ Color Functions ************************************
-
 	/**
 	 * this method return the cost to move a block depend on it's color, RED->30
 	 * GREEN->1, BLACK->can't move so 0 , E-> for the start state
@@ -392,16 +253,7 @@ public class State_Node {
 	 */
 	private Color getColor(int num) {return colorValidator.getColor(num);}
 
-	/**
-	 * this method checks the color of the block and says if this block can move or 
-	 * not: RED and GRENN - can move, BLACK - can't move 
-	 * @param color c
-	 * @return
-	 */
-	private boolean getAllowORnot(Color c) {return colorValidator.getAllowORnot(c);}
-
 	//********************** simple getters and setters
-
 	public int[][] getStateMatrix() {return this.StateMatrix;}
 
 	public State_Node getFatherPointer() {return this.fatherPointer;}
@@ -430,12 +282,16 @@ public class State_Node {
 
 	public String getPathSoFar() {return PathSoFar;}
 
-	public int getSumPat() {return sumPat;}
+	public int getNodeID() {return NodeID;}
+	
+	public void setTag(int tagOut) {this.tagOut=tagOut;}
+	
+	public int getTag() {return this.tagOut;}
 
-	//****************** Not simple getters and setters
 
+	//****************** Private setters
 	/**
-	 * This function gets the opertion string and cut it to number and Direction
+	 * This function gets the operation string and cut it to number and Direction
 	 * @return
 	 */
 	private void setOperation() {
@@ -445,14 +301,13 @@ public class State_Node {
 	}
 
 	//****************** Help Classes *****************
-
 	/**
 	 * This function sets a classes that will help as to work with the node state
 	 */
 	private void setTools () {
-		helpOperator = new OpertionHelper();
+		helpOperator = new OpertionHelper(this.numbersColors);
 		colorValidator = new ColorValidator(this.numbersColors);
-		directionHelper = new DirectionHelper();
+		directionHelper = new DirectionHelper(this.numbersColors);
 	}
 
 	//****************** Private Data *****************
@@ -463,8 +318,10 @@ public class State_Node {
 	private int numDirection;
 	private Direction direction;
 
+	private int NodeID;
+	private int tagOut;
+
 	private String PathSoFar;
-	private int sumPat;
 	private State_Node fatherPointer;
 
 	private int f;
@@ -484,13 +341,16 @@ public class State_Node {
 	//****************** Constructors *****************
 
 	public State_Node(int [][] StateMatrix, Hashtable<Integer, Color> numbersColors , String op, int g, int h,
-			State_Node fatherPointer, int minouOne_i, int minouOne_j, String PathSoFar) {
+			State_Node fatherPointer, int minouOne_i, int minouOne_j, String PathSoFar,int NodeID) {
 		this.StateMatrix=StateMatrix;
 		this.op=op;
 		this.fatherPointer=fatherPointer;
 		this.g=g;
 		this.h=h;
 
+		this.NodeID=NodeID;
+		this.tagOut=0;
+		
 		this.minouOne_i=minouOne_i;
 		this.minouOne_j=minouOne_j;
 		this.numbersColors = new Hashtable<Integer, Color>();

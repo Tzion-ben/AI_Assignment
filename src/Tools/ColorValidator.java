@@ -9,6 +9,7 @@ public class ColorValidator {
 
 	private Hashtable<Integer, Color> numbersColors = new Hashtable<Integer, Color>();
 
+	//****************** Private Constructor ******************
 	public ColorValidator(Hashtable<Integer, Color> numbersColors) {this.numbersColors=numbersColors;}
 	//*******************************************************************************************//
 

@@ -51,12 +51,12 @@ public class A_Star implements Algorithm{
 
 					//if it is a new state that wasn't even generated so put it at the open list 
 					//and at the PQ
-					if(!closeList.contains(child) && !openList.contains(child)) {
+					if(!closeList.containsKey(child.key()) && !openList.containsKey(child.key())) {
 						howNext.add(child);
 						openList.put(child.key(),child);
 					}
 
-					else if(openList.contains(child)) {
+					else if(openList.containsKey(child.key())) {
 						if(openList.get(child.key()).getF() > child.getF()) {
 							openList.remove(child.key());
 							State_Node tempChile = openList.get(child.key());

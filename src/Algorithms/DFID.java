@@ -68,7 +68,7 @@ public class DFID implements Algorithm {
 							n.getPathSoFar(),NodesNum);
 					NodesNum++; //counting the number of generated nodes
 
-					if(!loopAvoidance.contains(child)) {
+					if(!loopAvoidance.containsKey(child.key())) {
 						State_Node result = Limited_DFS(child, (limit-1), loopAvoidance); //running recursively
 
 						//it means that we came to the limit and no path yet, and not found the goal yet

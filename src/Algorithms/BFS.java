@@ -11,15 +11,15 @@ public class BFS implements Algorithm  {
 		ConcurrentLinkedQueue<State_Node> howNext = new ConcurrentLinkedQueue<State_Node>();
 
 		//this hash table will contain all the states that was generated but still wasn't expected 
-		Hashtable<Integer,State_Node> openList = new Hashtable<Integer,State_Node>();
+		Hashtable<String,State_Node> openList = new Hashtable<String,State_Node>();
 
 		//this hash table will contain all the states that was generated and was expected 
-		Hashtable<Integer,State_Node> closeList = new Hashtable<Integer,State_Node >();
+		Hashtable<String,State_Node> closeList = new Hashtable<String,State_Node >();
 
 		howNext.add(this.start);
 		openList.put(this.start.key(),this.start);
 
-		while(!openList.isEmpty()) {
+		while(!howNext.isEmpty()) {
 			State_Node n = howNext.poll();
 
 			//openList.remove(n.hash());
@@ -40,7 +40,7 @@ public class BFS implements Algorithm  {
 
 					//if it is a new state that wasn't even generated so put it at the open list 
 					if(!closeList.containsKey(child.key()) && !openList.containsKey(child.key())) {
-						if((child.key() == (this.goal.key())) ){return child;}
+						if((child.key().equals(this.goal.key())) ){return child;}
 						howNext.add(child);
 						openList.put(child.key(),child);
 					}

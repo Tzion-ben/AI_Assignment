@@ -1,11 +1,10 @@
 package DataStructure;
 
 import java.util.Hashtable;
-
-
 import Tools.*;
 
 public class State_Node {
+
 	/**
 	 * this function is manage all the operations in the state that
 	 * have to be automatically step be step
@@ -22,7 +21,6 @@ public class State_Node {
 	 * Searching for the Label 0 that represent the empty block and replace it with the new 
 	 * number that came from the operator
 	 */
-
 	public void setStateMatrix() {
 
 		if(this.direction == Direction.N) {
@@ -33,6 +31,7 @@ public class State_Node {
 
 		//moves the number of the operator to the location of 0
 		this.StateMatrix[this.minouOne_i][this.minouOne_j]=this.numDirection;
+
 		//now need to put the -1 at the location of the operator
 		switch (this.direction) {
 		case R:
@@ -53,8 +52,8 @@ public class State_Node {
 			break;
 
 		}
-		setH();
 
+		setH();
 	}
 
 	/**
@@ -177,7 +176,6 @@ public class State_Node {
 	}
 
 	//****************** Public methods *****************
-
 	/**
 	 * This function create a deep Copy of the given matrix state, so the new state won't
 	 * ruin the matrix of an existent father state of it   
@@ -227,7 +225,7 @@ public class State_Node {
 	 * returns the string assisted with this matrix state, for the hash Table of the Algorithms
 	 * @return
 	 */
-	public int key () {return helpOperator.key(this.StateMatrix);}
+	public String key () {return helpOperator.key(this.StateMatrix);}
 
 	/**
 	 * This function add the operator to the HashTable of the operators if and only if that new 
@@ -283,11 +281,12 @@ public class State_Node {
 	public String getPathSoFar() {return PathSoFar;}
 
 	public int getNodeID() {return NodeID;}
-	
+
 	public void setTag(int tagOut) {this.tagOut=tagOut;}
-	
+
 	public int getTag() {return this.tagOut;}
 
+	public void setNodeId(int id) {this.NodeID=id;}
 
 	//****************** Private setters
 	/**
@@ -350,7 +349,8 @@ public class State_Node {
 
 		this.NodeID=NodeID;
 		this.tagOut=0;
-		
+
+
 		this.minouOne_i=minouOne_i;
 		this.minouOne_j=minouOne_j;
 		this.numbersColors = new Hashtable<Integer, Color>();

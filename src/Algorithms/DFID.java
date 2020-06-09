@@ -15,7 +15,7 @@ public class DFID implements Algorithm {
 			 * state but at the future we can maybe generate or expected this state agsin because it can be
 			 * a child of other future state so it will make a infinite loop
 			 */
-			Hashtable<Integer, State_Node> loopAvoidance = new Hashtable<Integer, State_Node>();
+			Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
 			//Initialize a cutOff state that will use the number of the operator of it to true==1 or false==0
 			State_Node result = Limited_DFS(this.start, depth , loopAvoidance);
@@ -37,10 +37,10 @@ public class DFID implements Algorithm {
 	 * @param loopAvoidance Hashtable
 	 * @return
 	 */
-	private State_Node Limited_DFS(State_Node n, int limit ,Hashtable<Integer, State_Node> loopAvoidance) {
+	private State_Node Limited_DFS(State_Node n, int limit ,Hashtable<String, State_Node> loopAvoidance) {
 		int [][] toStart = this.start.deepCopy();
 		State_Node cutOff =  new State_Node(toStart, this.numbersColors,"0-N",-1,-1, null, -1, -1, null,0);
-		if(n.key() == (this.goal.key())) {return n;}//if came to the goal at the recursion
+		if(n.key().equals(this.goal.key())) {return n;}//if came to the goal at the recursion
 
 		/**
 		 * if we came here and not found the goal yet and the limit us equal to ZERO ' it might be because

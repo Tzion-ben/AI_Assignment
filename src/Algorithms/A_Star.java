@@ -22,17 +22,17 @@ public class A_Star implements Algorithm{
 		PriorityQueue<State_Node> howNext = new PriorityQueue<State_Node>(F_comperator);
 
 		//this hash table will contain all the states that was generated but still wasn't expected 
-		Hashtable<Integer,State_Node> openList = new Hashtable<Integer,State_Node>();
+		Hashtable<String,State_Node> openList = new Hashtable<String,State_Node>();
 
 		//this hash table will contain all the states that was generated and was expected 
-		Hashtable<Integer,State_Node> closeList = new Hashtable<Integer,State_Node>();
+		Hashtable<String,State_Node> closeList = new Hashtable<String,State_Node>();
 
 		howNext.add(this.start);
 		openList.put(this.start.key(), this.start);
 
 		while(!howNext.isEmpty()) {
 			State_Node n = howNext.poll();
-			if(n.key() == (this.goal.key())) {return n;}
+			if(n.key().equals(this.goal.key())) {return n;}
 
 			closeList.put(n.key(),n);
 			openList.remove(n.key());

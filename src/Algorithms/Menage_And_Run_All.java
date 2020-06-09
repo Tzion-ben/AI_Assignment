@@ -46,13 +46,18 @@ public class Menage_And_Run_All {
 		endTime = System.currentTimeMillis();
 		finalTime = (endTime-startTime)/1000.0;
 		System.out.println(finalTime+" sec ");
-		System.out.println("BFS :"+BFS.getNodesNum());
-		System.out.println("cost:"+ansBFS.getF());
-		String ansPrint  = ansBFS.getPathSoFar();
-		System.out.println(ansPrint);
-		
-		
-		
+		if(ansBFS!=null) {
+			System.out.println("BFS :"+BFS.getNodesNum());
+			System.out.println("cost:"+ansBFS.getF());
+			String ansPrint  = ansBFS.getPathSoFar();
+			System.out.println(ansPrint);
+		}
+		else {
+			System.out.println("BFS :"+BFS.getNodesNum());
+			System.out.println("No path at BFS");
+		}
+
+
 		DFID DFID = new DFID(startState, goal);
 		System.out.println();
 		startTime = System.currentTimeMillis();
@@ -76,7 +81,7 @@ public class Menage_And_Run_All {
 		System.out.println("cost:"+ansAStar.getF());
 		String ansPrintA_Star  = ansAStar.getPathSoFar();
 		System.out.println(ansPrintA_Star);
-		
+
 		IDA_Star IDA_Star = new IDA_Star(startState, goal);
 		System.out.println();
 		startTime = System.currentTimeMillis();

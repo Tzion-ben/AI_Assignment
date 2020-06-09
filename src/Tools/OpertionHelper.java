@@ -15,14 +15,14 @@ public class OpertionHelper {
 	 * @param mat
 	 * @return String result
 	 */
-	public int key (int [][] mat) {
-		int result = 0;
+	public String key (int [][] mat) {
+		String result = "";
 		String matState="";
 		for(int i=0 ; i<mat.length ; i++) 
 			for(int j=0 ; j<mat[0].length ; j++) {
 				matState=matState+String.valueOf(mat[i][j]);
 			}
-		result = Integer.valueOf(matState);
+		result = String.valueOf(matState);
 		return result;
 
 	}

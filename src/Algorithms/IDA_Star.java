@@ -18,7 +18,7 @@ public class IDA_Star implements Algorithm {
 		 * state but at the future we can maybe generate or expected this state agsin because it can be
 		 * a child of other future state so it will make a infinite loop
 		 */
-		Hashtable<Integer, State_Node> loopAvoidance = new Hashtable<Integer, State_Node>();
+		Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
 		Stack<State_Node> howNext = new Stack<State_Node>();
 
@@ -74,7 +74,7 @@ public class IDA_Star implements Algorithm {
 								}
 							}
 							
-							if(child.key() == this.goal.key()) {return child;}//if we found the goal so return is and done
+							if(child.key().equals(this.goal.key())) {return child;}//if we found the goal so return is and done
 							
 							howNext.push(child);
 							loopAvoidance.put(child.key(), child);

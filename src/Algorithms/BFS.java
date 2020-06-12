@@ -6,6 +6,9 @@ import DataStructure.*;
 
 public class BFS implements Algorithm  {
 
+	/************************************************************************************************
+	 * This Algorithm represent the BFS Algorithm. 
+	 ************************************************************************************************/
 	public State_Node Search_Goal_Algorithm() {
 		//using a Queue based on the List  
 		ConcurrentLinkedQueue<State_Node> howNext = new ConcurrentLinkedQueue<State_Node>();
@@ -21,21 +24,18 @@ public class BFS implements Algorithm  {
 
 		while(!howNext.isEmpty()) {
 			State_Node n = howNext.poll();
-
-			//openList.remove(n.hash());
 			closeList.put(n.key(),n);
 
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
-
 			//returns null if there is no path
 			if(allowedOprerators.isEmpty()) {return null;}
-			iteration++;
+			
 			for(int i=0 ; i<4 ; i++) {
 				if(allowedOprerators.containsKey(i)) {
 					String tempOp = allowedOprerators.get(i);
 					int [][] tempNmatrix = n.deepCopy();
 					State_Node child = new State_Node(tempNmatrix,this.numbersColors, tempOp, n.getG(),n.getH(),
-							n,n.getMinouOne_i(),n.getMinouOne_j(),n.getPathSoFar(),iteration);
+							n,n.getMinouOne_i(),n.getMinouOne_j(),n.getPathSoFar(),NodesNum);
 					NodesNum++;
 
 					//if it is a new state that wasn't even generated so put it at the open list 
@@ -47,28 +47,25 @@ public class BFS implements Algorithm  {
 				}
 			}
 		}
+		
 		return null;
 	}
-
+	
+	//****************simple getters
+	public int getNodesNum() {return NodesNum;}
+	
 	//****************** Private Data *****************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
-	private int iteration;
-
 
 	//****************** Constructors *****************
-
-	public int getNodesNum() {return NodesNum;}
-
-	public int getIteration() {return iteration;}
-
 	public BFS(State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;
-		this.iteration=0;
 	}
+	
 }

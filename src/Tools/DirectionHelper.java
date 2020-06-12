@@ -1,45 +1,41 @@
 package Tools;
-
+/**
+ * This class contains functions that helps the State_Node class with all the functions that
+ * associated with the direction of the operation that brings the state matrix to the specific state.
+ * @author Tzion
+ */
 import java.util.Hashtable;
-
 import DataStructure.Color;
 import DataStructure.Direction;
 
 public class DirectionHelper {
 
-	public DirectionHelper() {;}
-	//*******************************************************************************************//
-
-	/**
+	/************************************************************************************************
 	 * This function returns the reversed operation of a given operation
 	 * @return
-	 */
-	public Direction getReversedOp (Direction d) {
-		Direction rev = null;
-		switch (d) {
+	 ************************************************************************************************/
+	public Direction getReversedOp (Direction D) {
+		switch (D) {
 		case R: 
-			rev = Direction.L;
-			break;
+			return Direction.L;
 		case U:
-			rev = Direction.D;
-			break;
+			return Direction.D;
 		case L: 
-			rev = Direction.R;
-			break;
+			return Direction.R;
 		case D:
-			rev = Direction.U;
-			break;
+			return Direction.U;
 		}
-		return rev;
+
+		return null;
 	}
 
-	/**
+	/************************************************************************************************
 	 * This function returns the number of the direction 0...3,
-	 * based on the following order : L,U,R,D (0,1,2,3)
+	 * based on the following order : L,U,R,D --> (0,1,2,3)
 	 * @return
-	 */
-	public int getDirection_Id (Direction d) {
-		switch (d) {
+	 ************************************************************************************************/
+	public int getDirection_Id (Direction D) {
+		switch (D) {
 		case L: 
 			return 0;
 		case U:
@@ -49,35 +45,37 @@ public class DirectionHelper {
 		case D:
 			return 3;
 		}
+
 		return -1;
 	}
 
-	/**
-	 * This function gets i and j and State matrix and calculting if the number at this location is
+	/************************************************************************************************
+	 * This function gets i and j and State matrix and calculating if the number at this [i][j] location is
 	 * can to move or no (if the color is NOT black it's can move)
 	 * @param mat
 	 * @param numbersColors
 	 * @param i
 	 * @param j
 	 * @return
-	 */
+	 ************************************************************************************************/
 	public boolean locationToOperetors(int [][] mat, Hashtable<Integer, Color> numbersColors, int i, int j) {
 		Color colorToCheck = colorValidator.getColor((mat[i][j]));
 		return colorValidator.getAllowORnot(colorToCheck);
 	}
 
-	/**
-	 * This function return a string with number and it's allow direction to move
+	/************************************************************************************************
+	 * This function return a string with number and direction to move (only the allow directions) 
 	 * @param num
 	 * @param d
 	 * @return
-	 */
+	 ************************************************************************************************/
 	public String nextOperation(int [][] mat,int i,int j, Direction D) {return String.valueOf(mat[i][j])+"-"+D;}
 
-	/**
+	/************************************************************************************************
 	 * This function sets the colorValidator help Object
-	 */
+	 ************************************************************************************************/
 	private void setHelpColorValidator() {colorValidator = new ColorValidator(numbersColors);}
+
 	//*********************Private Data**************************
 	private ColorValidator colorValidator;
 	private Hashtable<Integer, Color> numbersColors = new Hashtable<Integer, Color>();
@@ -88,4 +86,5 @@ public class DirectionHelper {
 		this.numbersColors=numbersColors;
 		setHelpColorValidator();
 	}
+
 }

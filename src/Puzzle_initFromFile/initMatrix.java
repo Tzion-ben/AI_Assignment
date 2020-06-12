@@ -1,18 +1,20 @@
 package Puzzle_initFromFile;
-
+/**
+ * 
+ * @author Tzion
+ */
 import java.util.Hashtable;
-
 import DataStructure.Color;
 
 public class initMatrix {
 
-	/**
-	 * 
+	/************************************************************************************************
+	 * This function manage all the operation of the initialization of the game details from txt file
 	 * @param matSIZE
 	 * @param game_Matrix
 	 * @param blackBlocks
 	 * @param redBlocks
-	 */
+	 ************************************************************************************************/
 	private void initGame(String matSIZE, String game_Matrix, String blackBlocks, String redBlocks) {
 		initSIZE(matSIZE);
 		this.BlocksColors = new Hashtable<Integer, Color>();
@@ -24,10 +26,11 @@ public class initMatrix {
 		initGame_Matrix(game_Matrix);
 	}
 
-	/**
-	 * 
+	/************************************************************************************************
+	 * This function init the matrix of the Game from a String, put the Label 0 at the position 
+	 * of space "_"
 	 * @param game_Matrix
-	 */
+	 ************************************************************************************************/
 	private void initGame_Matrix(String game_Matrix) {
 		this.ThePuzzle=new int[this.n][this.m];
 		String [] intArray=game_Matrix.split(",");
@@ -35,10 +38,8 @@ public class initMatrix {
 		int RunONstringMat_Integeres=0;
 		for(int i=0;i<this.n;i++) {
 			for(int j=0;j<this.m;j++) {
-				if(intArray[RunONstringMat_Integeres].equals("_")) 
-					this.ThePuzzle[i][j]=0;
-				else 
-					this.ThePuzzle[i][j]=Integer.valueOf(intArray[RunONstringMat_Integeres]);
+				if(intArray[RunONstringMat_Integeres].equals("_")) {this.ThePuzzle[i][j]=0;}
+				else {this.ThePuzzle[i][j]=Integer.valueOf(intArray[RunONstringMat_Integeres]);}
 
 				RunONstringMat_Integeres++;
 			}
@@ -84,11 +85,11 @@ public class initMatrix {
 	}
 
 	/************************************************************************************************
-	 * This function initialize the HashTable of the blocks of numbers that their color is Green.
+	 * This function initialize at the HashTable of the blocks the numbers that their color is Green.
+	 * The "Green" it is all th numbers that not Black neither Red
 	 * Using hashMap to access the numbers in O(1)
 	 * 
-	 * -A:= If no have a red or black blocks (both ==null) so than all the numbers will be green 
-	 * -B:= I
+	 * - If the number is not at the HashTable so far so it's a green number
 	 * @param RedBloacks
 	 ************************************************************************************************/
 	private void initGreenBlocks(String BlackBlocks, String RedBlocks) {
@@ -97,22 +98,14 @@ public class initMatrix {
 				this.BlocksColors.put(i,Color.GREEN);
 	}
 
-	//simple getter
-	public int getN() {
-		return n;
-	}
+	//****************** simple getter ******************
+	public int getN() {return n;}
 
-	public int getM() {
-		return m;
-	}
+	public int getM() {return m;}
 
-	public int[][] getThePuzzle() {
-		return ThePuzzle;
-	}
+	public int[][] getThePuzzle() {return ThePuzzle;}
 
-	public Hashtable<Integer, Color> getBlocksColors() {
-		return BlocksColors;
-	}
+	public Hashtable<Integer, Color> getBlocksColors() {return BlocksColors;}
 
 	//****************** Private Data *****************
 	private int n;//numbers of the rows
@@ -123,7 +116,7 @@ public class initMatrix {
 	private Hashtable<Integer, Color> BlocksColors;
 
 	//****************** Constructors *****************
-	public initMatrix(String matSIZE, String Game_Matrix, String BlackBlocks, String RedBlocks) {
-		initGame(matSIZE,Game_Matrix,BlackBlocks,RedBlocks);
-	}
+	public initMatrix(String matSIZE, String Game_Matrix, String BlackBlocks, String RedBlocks) 
+	{initGame(matSIZE,Game_Matrix,BlackBlocks,RedBlocks);}
+
 }

@@ -1,6 +1,8 @@
 package Puzzle_initFromFile;
 /**
- * 
+ * This class representing a simple class of reading a txt file and create a Strings
+ * with every ingredient , to create a Puzzle Game matrix.  
+ * @author Tzion
  */
 import java.io.BufferedReader;
 /**
@@ -14,7 +16,7 @@ import java.io.IOException;
 
 public class initTXT {
 
-	 // simple getters	 
+	// simple getters	 
 	public String getAlgo() {return algo;}
 
 	public String getShowTimeORnot() {return showTimeORnot;}
@@ -31,6 +33,13 @@ public class initTXT {
 
 	/************************************************************************************************
 	 * This private function reading the game details from TXT file.
+	 * a. The first line is the Algorithm that will work on the Puzzle
+	 * b. second line says to print the game time or not 
+	 * c. 3rd line says if show the open list or not
+	 * d. 4th line it's the size of the matrix
+	 * e. 5th line it's the the numbers at the blocks that represents the black color
+	 * f. 5th line it's the the numbers at the blocks that represents the red color
+	 * g. the lines from 6th line it's the matrix it self
 	 ************************************************************************************************/
 	private void setFromFile(String Puzzle) {
 		try {

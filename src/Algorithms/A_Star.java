@@ -2,17 +2,16 @@ package Algorithms;
 
 import java.util.Hashtable;
 import java.util.PriorityQueue;
-
 import DataStructure.Color;
 import DataStructure.Heuristic_Comperator;
 import DataStructure.State_Node;
 
 public class A_Star implements Algorithm{
 
-	/**
+	/************************************************************************************************
 	 * This algorithm is represent A*.
 	 * @return
-	 */
+	 ************************************************************************************************/
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		//a comparator for the PQ , to create a priority

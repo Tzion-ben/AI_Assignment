@@ -1,20 +1,21 @@
 package Tools;
-
+/**
+ * This class contains functions that helps the State_Node class with all the functions that
+ * associated with the operation that brings the state matrix to the specific state.
+ * @author Tzion
+ */
 import java.util.Hashtable;
-
 import DataStructure.Color;
 import DataStructure.Direction;
 
 public class OpertionHelper {
 
-	//*******************************************************************************************//
-
-	/**
-	 * This function create a String from a int matrix and convert it to a number
+	/************************************************************************************************
+	 * This function create a String from a int matrix and convert it to a String
 	 * that represent the state matrix
 	 * @param mat
 	 * @return String result
-	 */
+	 ************************************************************************************************/
 	public String key (int [][] mat) {
 		String result = "";
 		String matState="";
@@ -23,14 +24,14 @@ public class OpertionHelper {
 				matState=matState+String.valueOf(mat[i][j]);
 			}
 		result = String.valueOf(matState);
-		return result;
 
+		return result;
 	}
 
-	/**
-	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
-	 * @return array wit the i and j of the 0
-	 */
+	/************************************************************************************************
+	 * This function searching for the position of the Label 0 that represent the empty block :"_" 
+	 * @return array in size 2, with the i and j (location) of the 0
+	 ************************************************************************************************/
 	public int [] setMinus_I_J(int[][] mat) {
 		boolean stop=false;	
 		int [] space_pos = new int [2];
@@ -43,9 +44,19 @@ public class OpertionHelper {
 				}
 			}
 		}
+		
 		return space_pos;
 	}
 
+	/************************************************************************************************
+	 * This function is calculating the Heuristic function for the Puzzle.
+	 * The function is based on the Manhattan distance heuristic/
+	 * Finds the "goal" location of every k | 1<=k<n*m, and calculating how many steps this k have to 
+	 * take to frim his position now to his "goal" position
+	 * @param mat
+	 * @param D
+	 * @return
+	 ************************************************************************************************/
 	public int setH(int [][] mat ,Direction D) {
 
 		int h=0;
@@ -54,10 +65,8 @@ public class OpertionHelper {
 		int SIZE = mat.length*mat[0].length;
 
 		/**
-		 * it's mean's that it's that it's the start state, so it have to calculate all the matrix
-		 * for the H function
+		 * at first i will find the "Goal" location of k
 		 */
-
 		int colum = mat[0].length;
 		for(int k=1 ; k<=SIZE ; k++ ) {
 			goal_j = now_j;
@@ -74,11 +83,11 @@ public class OpertionHelper {
 			for(int i=0;i<mat.length;i++) {
 				for(int j=0; j<mat[0].length;j++) {
 
-					//if it's not the -1 Label that represent "_" : a empty block
+					//if it's not the 0 Label that represent "_" : a empty block
 					if(mat[i][j]!=0) {
 						if(mat[i][j] == k) {
 
-							//how many steps have to do to put the number at his position 
+							//how many steps have to do to put the number at his "Goal" position 
 							//for the h function
 							stepsForI=goal_i-i;
 							stepsForJ=goal_j-j;
@@ -93,6 +102,7 @@ public class OpertionHelper {
 							//added it to the h function until now
 							h+=cost;
 
+							//to stop loop, and move to the next k
 							j=mat[0].length;
 							i=mat.length;
 						}
@@ -103,15 +113,17 @@ public class OpertionHelper {
 				}
 			}
 		}
+
 		return h;
 	}
 
-	/**
+	/************************************************************************************************
 	 * This function sets the colorValidator help Object
-	 */
+	 ************************************************************************************************/
 	private void setHelpColorValidator() {colorValidator = new ColorValidator(numbersColors);}
-	//*********************Private Data**************************
-	private ColorValidator colorValidator;
+
+	//********************* Private Data **************************
+	private  static ColorValidator colorValidator;
 	private Hashtable<Integer, Color> numbersColors = new Hashtable<Integer, Color>();
 
 	//****************** Private Constructor ******************
@@ -120,4 +132,5 @@ public class OpertionHelper {
 		this.numbersColors=numbersColors;
 		setHelpColorValidator();
 	}
+
 }

@@ -6,6 +6,9 @@ import DataStructure.State_Node;
 
 public class DFID implements Algorithm {
 
+	/**
+	 * 
+	 */
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		for(int depth=1 ; depth<Integer.MAX_VALUE; depth++) {
@@ -100,12 +103,10 @@ public class DFID implements Algorithm {
 	public int getNodesNum() {return NodesNum;}
 	
 	//****************** Private Data *****************
-
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
-
 
 	//****************** Constructors *****************
 	public DFID (State_Node start, State_Node goal) {
@@ -114,4 +115,5 @@ public class DFID implements Algorithm {
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;
 	}
+	
 }

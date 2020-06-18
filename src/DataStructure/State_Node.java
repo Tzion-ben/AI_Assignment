@@ -191,19 +191,6 @@ public class State_Node {
 
 	//*************************** Private Methods *********************************
 
-	/**
-	 * 
-	 * @return
-	 */
-	private void SetPathSoFar () {
-		if(this.op.compareTo("0-N") == 0) {
-			this.PathSoFar="";
-		}
-		else {
-			String [] opertionSoFar = this.op.split("-");
-			this.PathSoFar=this.PathSoFar+opertionSoFar[0]+opertionSoFar[1]+"-";
-		}
-	}
 	//********************************** Help to H Function ***********************************
 	/**
 	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
@@ -229,7 +216,7 @@ public class State_Node {
 
 	/**
 	 * This function add the operator to the HashTable of the operators if and only if that new 
-	 * operator is NOT the revers of this.direction
+	 * operator is NOT the reveres of this.direction
 	 */
 	private void setAllowOperator(int i, int j, Direction D) {
 		int direction_ID = directionHelper.getDirection_Id(D);
@@ -278,8 +265,6 @@ public class State_Node {
 
 	public void setNumDirection(int num) {this.numDirection=num;}
 
-	public String getPathSoFar() {return PathSoFar;}
-
 	public int getNodeID() {return NodeID;}
 
 	public void setTag(int tagOut) {this.tagOut=tagOut;}
@@ -291,7 +276,6 @@ public class State_Node {
 	//****************** Private setters
 	/**
 	 * This function gets the operation string and cut it to number and Direction
-	 * @return
 	 */
 	private void setOperation() {
 		String [] opertion = this.op.split("-");
@@ -320,7 +304,6 @@ public class State_Node {
 	private int NodeID;
 	private int tagOut;
 
-	private String PathSoFar;
 	private State_Node fatherPointer;
 
 	private int f;
@@ -340,7 +323,7 @@ public class State_Node {
 	//****************** Constructors *****************
 
 	public State_Node(int [][] StateMatrix, Hashtable<Integer, Color> numbersColors , String op, int g, int h,
-			State_Node fatherPointer, int minouOne_i, int minouOne_j, String PathSoFar,int NodeID) {
+			State_Node fatherPointer, int minouOne_i, int minouOne_j, int NodeID) {
 		this.StateMatrix=StateMatrix;
 		this.op=op;
 		this.fatherPointer=fatherPointer;
@@ -356,10 +339,8 @@ public class State_Node {
 		this.numbersColors = new Hashtable<Integer, Color>();
 		this.numbersColors=numbersColors;
 
-		this.PathSoFar = PathSoFar;
-		SetPathSoFar();
-
 		setTools();
 		manageAllOperations();
 	}
+
 }

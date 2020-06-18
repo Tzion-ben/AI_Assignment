@@ -42,7 +42,7 @@ public class DFID implements Algorithm {
 	 */
 	private State_Node Limited_DFS(State_Node n, int limit ,Hashtable<String, State_Node> loopAvoidance) {
 		int [][] toStart = this.start.deepCopy();
-		State_Node cutOff =  new State_Node(toStart, this.numbersColors,"0-N",-1,-1, null, -1, -1, null,0);
+		State_Node cutOff =  new State_Node(toStart, this.numbersColors,"0-N",-1,-1, null, -1, -1,0);
 		if(n.key().equals(this.goal.key())) {return n;}//if came to the goal at the recursion
 
 		/**
@@ -67,8 +67,7 @@ public class DFID implements Algorithm {
 					String tempOp = allowedOprerators.get(i);
 					int [][] tempNmatrix = n.deepCopy();
 					State_Node child = new State_Node(tempNmatrix,this.numbersColors, tempOp, n.getG(),n.getH(),
-							n,n.getMinouOne_i(),n.getMinouOne_j(),
-							n.getPathSoFar(),NodesNum);
+							n,n.getMinouOne_i(),n.getMinouOne_j(),NodesNum);
 					NodesNum++; //counting the number of generated nodes
 
 					if(!loopAvoidance.containsKey(child.key())) {
@@ -101,7 +100,7 @@ public class DFID implements Algorithm {
 	//*********************************************************************************
 	//********simple getters
 	public int getNodesNum() {return NodesNum;}
-	
+
 	//****************** Private Data *****************
 	private State_Node start;
 	private State_Node goal;
@@ -115,5 +114,5 @@ public class DFID implements Algorithm {
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;
 	}
-	
+
 }

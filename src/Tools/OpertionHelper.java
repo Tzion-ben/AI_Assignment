@@ -44,7 +44,7 @@ public class OpertionHelper {
 				}
 			}
 		}
-		
+
 		return space_pos;
 	}
 
@@ -116,6 +116,19 @@ public class OpertionHelper {
 
 		return h;
 	}
+
+	/************************************************************************************************
+	 * This function is calculating the factorial of the Game matrix SIZE, it's for the 
+	 * DFBnB Algorithm to set the TrashHold 
+	 * @param n
+	 * @return
+	 ************************************************************************************************/
+	public int setMatrixFactorial(int n) 
+	{ 
+		if (n == 0) {return 1;} 
+
+		return n*setMatrixFactorial(n-1); 
+	} 
 
 	/************************************************************************************************
 	 * This function sets the colorValidator help Object

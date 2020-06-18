@@ -27,6 +27,7 @@ public class BFS implements Algorithm  {
 			closeList.put(n.key(),n);
 
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
+			
 			//returns null if there is no path
 			if(allowedOprerators.isEmpty()) {return null;}
 			
@@ -35,7 +36,7 @@ public class BFS implements Algorithm  {
 					String tempOp = allowedOprerators.get(i);
 					int [][] tempNmatrix = n.deepCopy();
 					State_Node child = new State_Node(tempNmatrix,this.numbersColors, tempOp, n.getG(),n.getH(),
-							n,n.getMinouOne_i(),n.getMinouOne_j(),n.getPathSoFar(),NodesNum);
+							n,n.getMinouOne_i(),n.getMinouOne_j(),NodesNum);
 					NodesNum++;
 
 					//if it is a new state that wasn't even generated so put it at the open list 

@@ -49,7 +49,7 @@ public class IDA_Star implements Algorithm {
 							String tempOp = allowedOprerators.get(i);
 							int [][] tempNmatrix = n.deepCopy();
 							State_Node child = new State_Node(tempNmatrix,this.numbersColors, tempOp, n.getG(),n.getH(), n,
-									n.getMinouOne_i(),n.getMinouOne_j(),n.getPathSoFar(),NodesNum);
+									n.getMinouOne_i(),n.getMinouOne_j(),NodesNum);
 							NodesNum++;
 	
 							//if the f(n) is bigger then the treshHold then move to the next Operator (cut and move on...) 
@@ -89,7 +89,7 @@ public class IDA_Star implements Algorithm {
 	}
 
 	/**
-	 * This function removes a State_Node frim the stack
+	 * This function removes a State_Node from the stack
 	 */
 	private Stack<State_Node> removeFromStack (Stack<State_Node> original , State_Node toRemove) {
 		Stack<State_Node> tempSt = new Stack<State_Node>();
@@ -100,6 +100,7 @@ public class IDA_Star implements Algorithm {
 
 		return original;
 	}
+	
 	//********************************************************************************
 
 	//********simple getters

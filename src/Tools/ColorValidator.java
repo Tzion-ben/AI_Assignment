@@ -56,6 +56,18 @@ public class ColorValidator {
 		return false;
 	}
 
+	/************************************************************************************************
+	 * This method counting the size of the matrix without the BLACK blocks  
+	 * @return size of the matrix without the BLACK blocks
+	 ************************************************************************************************/
+	public int getNumWithOutBlackBlocks() {
+		int count = 0;
+		for (int i = 0; i < this.numbersColors.size(); i++) {
+			if(!this.numbersColors.get(i+1).equals(Color.BLACK)) {count++;}
+		}
+		return count;
+	}
+
 	//****************** Private Data *****************
 	private Hashtable<Integer, Color> numbersColors = new Hashtable<Integer, Color>();
 

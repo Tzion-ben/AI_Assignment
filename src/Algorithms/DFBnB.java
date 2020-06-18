@@ -31,6 +31,7 @@ public class DFBnB implements Algorithm {
 		//for the result to return it, if there is no path, will return's null
 		State_Node result = null;
 
+		this.start.setTag(0);
 		howNext.add(this.start);
 		loopAvoidance.put(this.start.key(), this.start);
 
@@ -45,7 +46,7 @@ public class DFBnB implements Algorithm {
 				howNext.push(n);
 
 				//apply all the allowed Operators on n in increasing order
-				PriorityQueue<State_Node> N = sotdNodes(n);
+				PriorityQueue<State_Node> N = sortNodes(n);
 
 				while(!N.isEmpty()) {
 					State_Node N_Node = N.peek();
@@ -54,10 +55,8 @@ public class DFBnB implements Algorithm {
 					 * if state from N is bigger then the trashHold so then remove it and all
 					 * the states after it because it in increasing oreder so thy eith more bigger F
 					 */
-					if(N_Node.getF()>= treshHold) {
-						N.clear();
-						//continue;
-					}
+					if(N_Node.getF()>= treshHold)
+					{N.clear();}
 
 					//if the node marked as "out" so we work on this branch and it will create al loop so to avoid loops
 					//we will remove this State Node
@@ -81,12 +80,11 @@ public class DFBnB implements Algorithm {
 						N.clear();//clear all the PQ
 					}
 
-					//if all this not workd before so insert all the nodes that left at th N to 
+					//if all this not worked before so insert all the nodes that left at th N to 
 					//howNext Stack and to the hashTable
 					else {
 						howNext.add(N_Node);
 						loopAvoidance.put(N_Node.key(), N_Node);
-						N.poll();
 					}
 				}
 			}
@@ -98,7 +96,7 @@ public class DFBnB implements Algorithm {
 	/************************************************************************************************
 	 * This function calculate the treshHold depend on the size of the matrix, if it less then
 	 * 12 without the black block numbers so the treshHold will be n factorial
-	 * If it more than 12 so the trashHold will be infinity(Int[eger.MaxValue) 
+	 * If it more than 12 so the trashHold will be infinity(Integer.MaxValue) 
 	 * @return
 	 ************************************************************************************************/
 	private int setTreshHold () {
@@ -115,12 +113,12 @@ public class DFBnB implements Algorithm {
 	 * there F, in increasing order in PriorityQueue
 	 * @return a PriorityQueue of the children in increasing order
 	 ************************************************************************************************/
-	private PriorityQueue<State_Node> sotdNodes (State_Node n){
+	private PriorityQueue<State_Node> sortNodes (State_Node n){
 		Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 
-		//a comparator for the PQ , to create a priority
+		//a comparator for the MAX-PQ , to create a MAX-priority
 		Heuristic_Comperator F_comperator = new Heuristic_Comperator();
-		PriorityQueue<State_Node> sortN = new PriorityQueue<State_Node>(F_comperator);
+		PriorityQueue<State_Node> sortN = new PriorityQueue<State_Node>(F_comperator.reversed());
 
 		if(allowedOprerators != null) {
 			for(int i=0; i<4 ;i++) {
@@ -179,7 +177,7 @@ public class DFBnB implements Algorithm {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=1;
+		this.NodesNum=0;
 
 		setHelpClass();
 	}

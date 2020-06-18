@@ -1,7 +1,5 @@
 package Algorithms;
 
-
-import DataStructure.Direction;
 import DataStructure.State_Node;
 import Puzzle_initFromFile.initMatrix;
 import Puzzle_initFromFile.initTXT;
@@ -106,27 +104,27 @@ public class Menage_And_Run_All {
 			System.out.println("No path at A_Star");
 		}
 		
-//		IDA_Star IDA_Star = new IDA_Star(startState, goal);
-//		System.out.println();
-//		startTime = System.currentTimeMillis();
-//		State_Node ansIDA_Star = IDA_Star.Search_Goal_Algorithm();
-//		endTime = System.currentTimeMillis();
-//		finalTime = (endTime-startTime)/1000.0;
-//		System.out.println(finalTime+" sec ");
-//		if(ansIDA_Star!=null) {
-//			System.out.println("IDA_Star :"+IDA_Star.getNodesNum());
-//			System.out.println("cost:"+ansIDA_Star.getF());
-//			String Path ="";
-//			while(ansAStar!=null) {
-//				Path=ansIDA_Star.getOperation()+" "+Path;
-//				ansIDA_Star=ansIDA_Star.getFatherPointer();
-//			}
-//			System.out.println(Path);
-//		}
-//		else {
-//			System.out.println("IDA_Star :"+DFID.getNodesNum());
-//			System.out.println("No path at IDA_Star");
-//		}
+		IDA_Star IDA_Star = new IDA_Star(startState, goal);
+		System.out.println();
+		startTime = System.currentTimeMillis();
+		State_Node ansIDA_Star = IDA_Star.Search_Goal_Algorithm();
+		endTime = System.currentTimeMillis();
+		finalTime = (endTime-startTime)/1000.0;
+		System.out.println(finalTime+" sec ");
+		if(ansIDA_Star!=null) {
+			System.out.println("IDA_Star :"+IDA_Star.getNodesNum());
+			System.out.println("cost:"+ansIDA_Star.getF());
+			String Path ="";
+			while(ansAStar!=null) {
+				Path=ansIDA_Star.getOperation()+" "+Path;
+				ansIDA_Star=ansIDA_Star.getFatherPointer();
+			}
+			System.out.println(Path);
+		}
+		else {
+			System.out.println("IDA_Star :"+DFID.getNodesNum());
+			System.out.println("No path at IDA_Star");
+		}
 
 		DFBnB DFBnB = new DFBnB(startState, goal);
 		System.out.println();
@@ -139,7 +137,7 @@ public class Menage_And_Run_All {
 			System.out.println("DFBnB :"+DFBnB.getNodesNum());
 			System.out.println("cost:"+ansDFBnB.getF());
 			String Path ="";
-			while(ansAStar!=null) {
+			while(ansDFBnB!=null) {
 				Path=ansDFBnB.getOperation()+" "+Path;
 				ansDFBnB=ansDFBnB.getFatherPointer();
 			}

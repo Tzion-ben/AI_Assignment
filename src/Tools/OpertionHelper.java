@@ -1,7 +1,7 @@
 package Tools;
 /**
  * This class contains functions that helps the State_Node class with all the functions that
- * associated with the operation that brings the state matrix to the specific state.
+ * associated with a operation that brings the state matrix to a specific state.
  * @author Tzion
  */
 import java.util.Hashtable;
@@ -10,12 +10,12 @@ import DataStructure.Direction;
 
 public class OpertionHelper {
 
-	/************************************************************************************************
-	 * This function create a String from a int matrix and convert it to a String
-	 * that represent the state matrix
+	/**
+	 * This function create a String from a integer matrix be the order of the numbers in the matrix
+	 * of the state to use it as a unique key to the state 
 	 * @param mat
 	 * @return String result
-	 ************************************************************************************************/
+	 */
 	public String key (int [][] mat) {
 		String result = "";
 		String matState="";
@@ -28,10 +28,10 @@ public class OpertionHelper {
 		return result;
 	}
 
-	/************************************************************************************************
+	/**
 	 * This function searching for the position of the Label 0 that represent the empty block :"_" 
-	 * @return array in size 2, with the i and j (location) of the 0
-	 ************************************************************************************************/
+	 * @return array of size 2, with the i and j indexes of the 0
+	 */
 	public int [] setMinus_I_J(int[][] mat) {
 		boolean stop=false;	
 		int [] space_pos = new int [2];
@@ -48,15 +48,15 @@ public class OpertionHelper {
 		return space_pos;
 	}
 
-	/************************************************************************************************
-	 * This function is calculating the Heuristic function for the Puzzle.
-	 * The function is based on the Manhattan distance heuristic/
+	/**
+	 * This function is calculating the Heuristic function for every state at the Puzzle.
+	 * The function is based on the Manhattan distance heuristic.
 	 * Finds the "goal" location of every k | 1<=k<n*m, and calculating how many steps this k have to 
-	 * take to frim his position now to his "goal" position
-	 * @param mat
-	 * @param D
-	 * @return
-	 ************************************************************************************************/
+	 * take from his "real" position now to his "Goal" position at the Board
+	 * @param Integer matrix Board
+	 * @param Direction of the operator
+	 * @return f(h) of the state
+	 */
 	public int setH(int [][] mat ,Direction D) {
 
 		int h=0;
@@ -67,15 +67,15 @@ public class OpertionHelper {
 		/**
 		 * at first i will find the "Goal" location of k
 		 */
-		int colum = mat[0].length;
+		int column = mat[0].length;
 		for(int k=1 ; k<=SIZE ; k++ ) {
 			goal_j = now_j;
 			goal_i = now_i;
 			now_j++;//the columns runs
 
 			//if k divided be now_i that it's the number of the row so it mean's it's
-			//the last location of the row 
-			if(k/(now_i+1) == colum) {  //a new line at the goal matrix so i++ and j=0
+			//the last location of the row , so the row is grow's and the column will be 0
+			if(k/(now_i+1) == column) {  //a new line at the goal matrix so i++ and j=0
 				now_i++;
 				now_j=0;
 			}
@@ -96,13 +96,13 @@ public class OpertionHelper {
 							Color colorToCosr = colorValidator.getColor(mat[i][j]);
 							int costColor= colorValidator.getCost(colorToCosr);
 
-							//calculate steps for rows+columns
+							//calculate steps for rows+columns to the goal position 
 							int cost=(Math.abs(stepsForI)+Math.abs(stepsForJ))*costColor;
 
 							//added it to the h function until now
 							h+=cost;
 
-							//to stop loop, and move to the next k
+							//to stop the loop, and move to the next k
 							j=mat[0].length;
 							i=mat.length;
 						}
@@ -117,12 +117,12 @@ public class OpertionHelper {
 		return h;
 	}
 
-	/************************************************************************************************
+	/**
 	 * This function is calculating the factorial of the Game matrix SIZE, it's for the 
 	 * DFBnB Algorithm to set the TrashHold 
 	 * @param n
-	 * @return
-	 ************************************************************************************************/
+	 * @return factorial (n)
+	 */
 	public int setMatrixFactorial(int n) 
 	{ 
 		if (n == 0) {return 1;} 
@@ -130,16 +130,16 @@ public class OpertionHelper {
 		return n*setMatrixFactorial(n-1); 
 	} 
 
-	/************************************************************************************************
+	/**
 	 * This function sets the colorValidator help Object
-	 ************************************************************************************************/
+	 */
 	private void setHelpColorValidator() {colorValidator = new ColorValidator(numbersColors);}
 
-	//********************* Private Data **************************
-	private  static ColorValidator colorValidator;
+	//*********************************** Private Data ***********************************
+	private static ColorValidator colorValidator;
 	private Hashtable<Integer, Color> numbersColors = new Hashtable<Integer, Color>();
 
-	//****************** Private Constructor ******************
+	//************************************ Constructor ***********************************
 	public OpertionHelper (Hashtable<Integer, Color> numbersColors) 
 	{
 		this.numbersColors=numbersColors;

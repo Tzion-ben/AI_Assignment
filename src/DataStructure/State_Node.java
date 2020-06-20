@@ -1,12 +1,16 @@
 package DataStructure;
-
+/**
+ * This class is represent a State_Node, it means that it is the state of every move at the 
+ * search Algorithm 
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import Tools.*;
 
 public class State_Node {
 
 	/**
-	 * this function is manage all the operations in the state that
+	 * This function is manage all the operations in the state that
 	 * have to be automatically step be step
 	 */
 	private void manageAllOperations() {
@@ -17,7 +21,7 @@ public class State_Node {
 	}
 
 	/**
-	 * This function is reorganize the State matrix, depend on the operator.
+	 * This function is reorganize the State matrix Board, depend on the operator.
 	 * Searching for the Label 0 that represent the empty block and replace it with the new 
 	 * number that came from the operator
 	 */
@@ -57,15 +61,15 @@ public class State_Node {
 	}
 
 	/**
-	 * this function calculate the heuristic function of this state based on the "Manhattan Distance" 
+	 * This function calculate the heuristic function of this state based on the "Manhattan Distance" 
 	 */
 	public void setH() {
-		this.h=helpOperator.setH(this.StateMatrix, this.direction);
+		this.h=operatorHelper.setH(this.StateMatrix, this.direction);
 		setG();
 	}
 
 	/**
-	 * this functions sets the g function of this state, the g is the real cost so far.
+	 * This functions sets the g function of this state, the g is the real cost so far.
 	 * the function add the given g from the state before to the cost to create this state
 	 */
 	public void setG() {
@@ -76,12 +80,12 @@ public class State_Node {
 	}
 
 	/**
-	 * Sets the f of the state to be h+g, send the h and g that calculated so far
+	 * Sets the f(n) of the state to be h(n)+g(n), send the h and g that calculated so far
 	 */
 	public void setF() {this.f=this.h+this.g;}
 
 	/**
-	 * this function sets all the operators that allows on this state
+	 * This function sets all the operators that allows on this state
 	 */
 	public void setOprerators() {
 		this.allowOP = new Hashtable<Integer, String>();
@@ -175,9 +179,9 @@ public class State_Node {
 		}
 	}
 
-	//****************** Public methods *****************
+	//************************************ Public methods ************************************
 	/**
-	 * This function create a deep Copy of the given matrix state, so the new state won't
+	 * This function create a deep Copy of the given matrix state Board, so the new state won't
 	 * ruin the matrix of an existent father state of it   
 	 * @return
 	 */
@@ -189,30 +193,30 @@ public class State_Node {
 		return newStateMat;
 	}
 
-	//*************************** Private Methods *********************************
-
+	//************************************ Private Methods ************************************
 	//********************************** Help to H Function ***********************************
 	/**
-	 * this function searching for the position of the Label -1 that represent the empty block :"_" 
-	 * @return array wit the i and j of the 0
+	 * This function searching for the position of the Label 0 that represent the empty block :"_" 
+	 * @return array with the i and j of the 0 Label
 	 */
 	private void setFirstMinus_I_J() {
-		int [] spcace_pos = helpOperator.setMinus_I_J(this.StateMatrix);
+		int [] spcace_pos = operatorHelper.setMinus_I_J(this.StateMatrix);
 		this.minouOne_i=spcace_pos[0];
 		this.minouOne_j=spcace_pos[1];
 	}
 
 	/**
-	 * this function set the i and j of the "_", that marks as 0 to a given i and j
+	 * This function set the location of the "_", that marks as 0, to a given i and j
 	 */
 	private void setMinus_Loctions(int new_i, int new_j) {this.StateMatrix[new_i][new_j]=0;}
 
-	//********************************** Operator Functions ***********************************
+	//******************************* Operator Helper Functions *******************************
 	/**
-	 * returns the string assisted with this matrix state, for the hash Table of the Algorithms
-	 * @return
+	 * This function returns a unique string assisted with this matrix state, for the key to the 
+	 * hash Table of the Algorithms
+	 * @return String represents a unique key to the state
 	 */
-	public String key () {return helpOperator.key(this.StateMatrix);}
+	public String key () {return operatorHelper.key(this.StateMatrix);}
 
 	/**
 	 * This function add the operator to the HashTable of the operators if and only if that new 
@@ -220,25 +224,26 @@ public class State_Node {
 	 */
 	private void setAllowOperator(int i, int j, Direction D) {
 		int direction_ID = directionHelper.getDirection_Id(D);
+
 		//if and only if the direction of the new operator is NOT reversed direction
 		if(!directionHelper.getReversedOp(D).equals(this.direction))
 			this.allowOP.put(direction_ID,directionHelper.nextOperation(this.StateMatrix, i, j, D));
 	}
 
-	//************************************ Color Functions ************************************
+	//********************************* Color Helper Functions ********************************
 	/**
-	 * this method return the cost to move a block depend on it's color, RED->30
-	 * GREEN->1, BLACK->can't move so 0 , E-> for the start state
+	 * This method return the cost to move a specific block depend on it's color, RED->30
+	 * GREEN->1, BLACK->can't move so 0 , E-> for the start state also 0
 	 * @return cost depend on the color
 	 */
-	private int getCost (Color c){return colorValidator.getCost(c);}
+	private int getCost (Color c){return colorHelper.getCost(c);}
 
 	/**
-	 * this function return the "color" of a given number from the matrix game of the state
+	 * This function return the "color" of a given number from the matrix Game
 	 */
-	private Color getColor(int num) {return colorValidator.getColor(num);}
+	private Color getColor(int num) {return colorHelper.getColor(num);}
 
-	//********************** simple getters and setters
+	//****************************** simple getters and setters ******************************
 	public int[][] getStateMatrix() {return this.StateMatrix;}
 
 	public State_Node getFatherPointer() {return this.fatherPointer;}
@@ -273,9 +278,10 @@ public class State_Node {
 
 	public void setNodeId(int id) {this.NodeID=id;}
 
-	//****************** Private setters
+	//********************************* Private setters *********************************
 	/**
-	 * This function gets the operation string and cut it to number and Direction
+	 * This function gets the operation string that represent for example: 5-U, and cut it 
+	 * to number and Direction
 	 */
 	private void setOperation() {
 		String [] opertion = this.op.split("-");
@@ -283,18 +289,17 @@ public class State_Node {
 		this.direction = Direction.valueOf(opertion[1]);
 	}
 
-	//****************** Help Classes *****************
+	//*********************************** Help Classes ***********************************
 	/**
-	 * This function sets a classes that will help as to work with the node state
+	 * This function sets the classes that will help State_Node class to work.
 	 */
 	private void setTools () {
-		helpOperator = new OpertionHelper(this.numbersColors);
-		colorValidator = new ColorValidator(this.numbersColors);
+		operatorHelper = new OpertionHelper(this.numbersColors);
+		colorHelper = new ColorValidator(this.numbersColors);
 		directionHelper = new DirectionHelper(this.numbersColors);
 	}
 
-	//****************** Private Data *****************
-
+	//*********************************** Private Data ***********************************
 	private int [][] StateMatrix;
 
 	private String op;
@@ -316,12 +321,11 @@ public class State_Node {
 	private Hashtable<Integer, Color> numbersColors;
 	private Hashtable<Integer, String> allowOP;
 
-	private OpertionHelper helpOperator;
-	private ColorValidator colorValidator;
-	private DirectionHelper directionHelper;
+	private static OpertionHelper operatorHelper;
+	private static ColorValidator colorHelper;
+	private static DirectionHelper directionHelper;
 
-	//****************** Constructors *****************
-
+	//*********************************** Constructors ***********************************
 	public State_Node(int [][] StateMatrix, Hashtable<Integer, Color> numbersColors , String op, int g, int h,
 			State_Node fatherPointer, int minouOne_i, int minouOne_j, int NodeID) {
 		this.StateMatrix=StateMatrix;

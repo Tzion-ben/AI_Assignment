@@ -1,14 +1,17 @@
 package Algorithms;
-
+/**
+ * This class represent the BFS Algorithm
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import DataStructure.*;
 
 public class BFS implements Algorithm  {
 
-	/************************************************************************************************
+	/**
 	 * This Algorithm represent the BFS Algorithm. 
-	 ************************************************************************************************/
+	 */
 	public State_Node Search_Goal_Algorithm() {
 		//using a Queue based on the List  
 		ConcurrentLinkedQueue<State_Node> howNext = new ConcurrentLinkedQueue<State_Node>();
@@ -27,10 +30,10 @@ public class BFS implements Algorithm  {
 			closeList.put(n.key(),n);
 
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
-			
+
 			//returns null if there is no path
 			if(allowedOprerators.isEmpty()) {return null;}
-			
+
 			for(int i=0 ; i<4 ; i++) {
 				if(allowedOprerators.containsKey(i)) {
 					String tempOp = allowedOprerators.get(i);
@@ -48,25 +51,25 @@ public class BFS implements Algorithm  {
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
-	//****************simple getters
+
+	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
-	
-	//****************** Private Data *****************
+
+	//*********************************** Private Data ***********************************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
-	//****************** Constructors *****************
+	//************************************ Constructor ***********************************
 	public BFS(State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=1;
+		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 	}
-	
+
 }

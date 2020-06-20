@@ -1,5 +1,8 @@
 package Algorithms;
-
+/**
+ * This class represent the DFBnB Algorithm
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -11,9 +14,9 @@ import Tools.OpertionHelper;
 
 public class DFBnB implements Algorithm {
 
-	/************************************************************************************************
+	/**
 	 * This function represent a DFBnB Algorithm.
-	 ************************************************************************************************/
+	 */
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		/**
@@ -93,26 +96,26 @@ public class DFBnB implements Algorithm {
 		return result;
 	}
 
-	/************************************************************************************************
+	/**
 	 * This function calculate the treshHold depend on the size of the matrix, if it less then
-	 * 12 without the black block numbers so the treshHold will be n factorial
-	 * If it more than 12 so the trashHold will be infinity(Integer.MaxValue) 
-	 * @return
-	 ************************************************************************************************/
+	 * 12 without the BLACK block numbers so the treshHold will be n factorial,
+	 * if it more than 12 so the trashHold will be infinity(Integer.MaxValue) 
+	 * @return calculated treshHold
+	 */
 	private int setTreshHold () {
 		int treshHold = Integer.MAX_VALUE;
 
 		int SIZE = this.start.getStateMatrix().length * this.start.getStateMatrix()[0].length;
-		if(colorValidator.getNumWithOutBlackBlocks() <12) {treshHold = opertionHelper.setMatrixFactorial(SIZE);}
+		if(colorHelper.getNumWithOutBlackBlocks() <12) {treshHold = opertionHelper.setMatrixFactorial(SIZE);}
 
 		return treshHold;
 	}
 
-	/************************************************************************************************
+	/**
 	 * This function expected all the children of a given State_Node and sort's them based on 
 	 * there F, in increasing order in PriorityQueue
 	 * @return a PriorityQueue of the children in increasing order
-	 ************************************************************************************************/
+	 */
 	private PriorityQueue<State_Node> sortNodes (State_Node n){
 		Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 
@@ -137,9 +140,10 @@ public class DFBnB implements Algorithm {
 		return sortN;
 	}
 
-	/************************************************************************************************
-	 * This function removes a State_Node from the stack
-	 ************************************************************************************************/
+	/**
+	 * This function removes a given State_Node from the stack
+	 * @return the given stack without the given State_Node
+	 */
 	private Stack<State_Node> removeFromStack (Stack<State_Node> original , State_Node toRemove) {
 		Stack<State_Node> tempSt = new Stack<State_Node>();
 		while(!original.isEmpty() && (original.peek().key() != toRemove.key())) {tempSt.push(original.pop());}
@@ -150,34 +154,34 @@ public class DFBnB implements Algorithm {
 		return original;
 	}
 
-	/************************************ Private Methods *******************************************/
-	/************************************************************************************************
+	/************************************ Private Methods *******************************************
+	/**
 	 * This function sets a classes that will help as to make some operations on the 
 	 * DFBnB Algorithm
-	 ************************************************************************************************/
+	 */
 	private void setHelpClass() {
 		opertionHelper = new OpertionHelper(this.numbersColors);
-		colorValidator = new ColorValidator(this.numbersColors);
+		colorHelper = new ColorValidator(this.numbersColors);
 	}
 
-	//********simple getters
+	//********************************* simple getters *********************************
 	public int getNodesNum() {return NodesNum;}
 
-	//****************** Private Data *****************
+	//********************************** Private Data **********************************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
-	private ColorValidator colorValidator;
-	private OpertionHelper opertionHelper;
+	private static ColorValidator colorHelper;
+	private static OpertionHelper opertionHelper;
 
-	//****************** Constructors *****************
+	//********************************** Constructors **********************************
 	public DFBnB(State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=0;
+		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 
 		setHelpClass();
 	}

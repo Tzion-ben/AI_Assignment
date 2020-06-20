@@ -1,6 +1,6 @@
 package Puzzle_initFromFile;
 /**
- * 
+ * This class is represent a initialization of the Game details from .txt file
  * @author Tzion
  */
 import java.util.Hashtable;
@@ -8,13 +8,13 @@ import DataStructure.Color;
 
 public class initMatrix {
 
-	/************************************************************************************************
-	 * This function manage all the operation of the initialization of the game details from txt file
+	/**
+	 * This function manage all the operation of the initialization of the game details from .txt file
 	 * @param matSIZE
 	 * @param game_Matrix
 	 * @param blackBlocks
 	 * @param redBlocks
-	 ************************************************************************************************/
+	 */
 	private void initGame(String matSIZE, String game_Matrix, String blackBlocks, String redBlocks) {
 		initSIZE(matSIZE);
 		this.BlocksColors = new Hashtable<Integer, Color>();
@@ -22,15 +22,15 @@ public class initMatrix {
 		initRedBlocks(redBlocks);
 		initGreenBlocks(blackBlocks, redBlocks);
 
-		//final step:
+		//final step: initialize the Integer matrix
 		initGame_Matrix(game_Matrix);
 	}
 
-	/************************************************************************************************
-	 * This function init the matrix of the Game from a String, put the Label 0 at the position 
-	 * of space "_"
-	 * @param game_Matrix
-	 ************************************************************************************************/
+	/**
+	 * This function initialize the Integer matrix of the Game from a String, put the Label 0 at the position 
+	 * of the space: "_"
+	 * @param game_Matrix String
+	 */
 	private void initGame_Matrix(String game_Matrix) {
 		this.ThePuzzle=new int[this.n][this.m];
 		String [] intArray=game_Matrix.split(",");
@@ -46,21 +46,21 @@ public class initMatrix {
 		}
 	}
 
-	/************************************************************************************************
+	/**
 	 * This function initialize the Puzzle matrix SIZE from string
-	 * @param matSIZE
-	 ************************************************************************************************/
+	 * @param matSIZE: n*m
+	 */
 	private void initSIZE(String matSIZE) {
 		String [] cut_X=matSIZE.split("x");
 		this.n=Integer.valueOf(cut_X[0]);
 		this.m=Integer.valueOf(cut_X[1]);
 	}
 
-	/************************************************************************************************
-	 * This function initialize the HashTable of the blocks of numbers that their color is Black.
+	/**
+	 * This function initialize at the HashTable the blocks of numbers that their color is Black.
 	 * Using hashMap to access the numbers in O(1)
 	 * @param BalckBloacks
-	 ************************************************************************************************/
+	 */
 	private void initBalckBlocks(String BlackBloacks) {
 		if(BlackBloacks!=null) {
 			String [] tempBalck=BlackBloacks.split(",");
@@ -70,11 +70,11 @@ public class initMatrix {
 		}
 	}
 
-	/************************************************************************************************
-	 * This function initialize the HashTable of the blocks of numbers that their color is Red.
+	/**
+	 * This function initialize at the HashTable the blocks of numbers that their color is Red.
 	 * Using hashMap to access the numbers in O(1)
 	 * @param RedBloacks
-	 ************************************************************************************************/
+	 */
 	private void initRedBlocks(String RedBlocks) {
 		if(RedBlocks!=null) {
 			String [] tempRed=RedBlocks.split(",");
@@ -84,21 +84,21 @@ public class initMatrix {
 		}
 	}
 
-	/************************************************************************************************
-	 * This function initialize at the HashTable of the blocks the numbers that their color is Green.
-	 * The "Green" it is all th numbers that not Black neither Red
+	/**
+	 * This function initialize at the HashTable of the blocks the numbers that there color is Green.
+	 * The "Green" it is all the numbers that not Black neither Red
 	 * Using hashMap to access the numbers in O(1)
 	 * 
 	 * - If the number is not at the HashTable so far so it's a green number
-	 * @param RedBloacks
-	 ************************************************************************************************/
+	 * @param RedBloacks BlackBlocks
+	 */
 	private void initGreenBlocks(String BlackBlocks, String RedBlocks) {
 		for(int i=1;i<=this.n*this.m ;i++) 
 			if(!this.BlocksColors.containsKey(i))
 				this.BlocksColors.put(i,Color.GREEN);
 	}
 
-	//****************** simple getter ******************
+	//*********************************** simple getter **********************************
 	public int getN() {return n;}
 
 	public int getM() {return m;}
@@ -107,15 +107,15 @@ public class initMatrix {
 
 	public Hashtable<Integer, Color> getBlocksColors() {return BlocksColors;}
 
-	//****************** Private Data *****************
+	//*********************************** Private Data ***********************************
 	private int n;//numbers of the rows
 	private int m;//numbers of the columns
 	private int [][] ThePuzzle;
 
-	//For each number, to get the color of the number at the Puzzle, it will be O(1)
+	//For each number, to get the color of the block of the number at the Puzzle, it will be O(1)
 	private Hashtable<Integer, Color> BlocksColors;
 
-	//****************** Constructors *****************
+	//*********************************** Constructors ***********************************
 	public initMatrix(String matSIZE, String Game_Matrix, String BlackBlocks, String RedBlocks) 
 	{initGame(matSIZE,Game_Matrix,BlackBlocks,RedBlocks);}
 

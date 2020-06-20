@@ -1,5 +1,8 @@
 package Algorithms;
-
+/**
+ * This class represent the A* Algorithm
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 import DataStructure.Color;
@@ -8,10 +11,9 @@ import DataStructure.State_Node;
 
 public class A_Star implements Algorithm{
 
-	/************************************************************************************************
-	 * This algorithm is represent A*.
-	 * @return
-	 ************************************************************************************************/
+	/**
+	 * This Algorithm is represent A*.
+	 */
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		//a comparator for the PQ , to create a priority
@@ -60,14 +62,16 @@ public class A_Star implements Algorithm{
 							openList.remove(child.key());
 							State_Node tempChile = openList.get(child.key());
 							howNext.remove(tempChile);
-							
+
 							howNext.add(child);
 							openList.put(child.key(), child);
 						}
 					}
-					//else: if the state is generated and we will check if it's on the 
-					//branch that we work so we will check if it is a better path
 
+					/**
+					 *else: if the state is generated and we will check if it's on the 
+					 *branch that we work so we will check if it is a better path 
+					 */
 				}
 			}
 		}
@@ -75,28 +79,21 @@ public class A_Star implements Algorithm{
 		return null;
 	}
 
-	//********************************************************************************
-
-	//********simple getters
+	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
-	public int getIteration() {return iteration;}
-
-	//****************** Private Data *****************
-
+	//*********************************** Private Data ***********************************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
-	private int iteration;
 
-	//****************** Constructors *****************
+	//************************************ Constructor ***********************************
 	public A_Star (State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=1;
-		this.iteration=0;
+		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 	}
 
 }

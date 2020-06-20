@@ -1,5 +1,8 @@
 package Algorithms;
-
+/**
+ * This class represent the IDA* Algorithm
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import java.util.Stack;
 import DataStructure.Color;
@@ -15,7 +18,7 @@ public class IDA_Star implements Algorithm {
 
 		/**
 		 * this hash table is for loop Avoidance, because if we work on a branch and expected some
-		 * state but at the future we can maybe generate or expected this state agsin because it can be
+		 * state but at the future we can maybe generate or expected this state again because it can be
 		 * a child of other future state so it will make a infinite loop
 		 */
 		Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
@@ -28,7 +31,7 @@ public class IDA_Star implements Algorithm {
 		while(treshHold != Integer.MAX_VALUE) {
 			int minF = Integer.MAX_VALUE; //the minimum F now is infinity at the start
 			this.start.setTag(0);//starting again
-			
+
 			howNext.push(this.start); 
 			loopAvoidance.put(this.start.key(), this.start);
 
@@ -51,12 +54,13 @@ public class IDA_Star implements Algorithm {
 							State_Node child = new State_Node(tempNmatrix,this.numbersColors, tempOp, n.getG(),n.getH(), n,
 									n.getMinouOne_i(),n.getMinouOne_j(),NodesNum);
 							NodesNum++;
-	
+
 							//if the f(n) is bigger then the treshHold then move to the next Operator (cut and move on...) 
 							if(child.getF() > treshHold) {
 								minF = Math.min(minF, child.getF());
 								continue;
 							}
+
 							//if the child is in the hash and marked as "out" (1) so we catch a loop so move to next
 							//operator (cut and move on...)
 							if(loopAvoidance.containsKey(child.key())) {
@@ -69,13 +73,14 @@ public class IDA_Star implements Algorithm {
 										loopAvoidance.remove(child.key());
 										removeFromStack(howNext, child);
 									}
+
 									//else --> move to the next Operator (cut and move on...)
 									else {continue;}
 								}
 							}
-							
+
 							if(child.key().equals(this.goal.key())) {return child;}//if we found the goal so return is and done
-							
+
 							howNext.push(child);
 							loopAvoidance.put(child.key(), child);
 						}
@@ -89,7 +94,8 @@ public class IDA_Star implements Algorithm {
 	}
 
 	/**
-	 * This function removes a State_Node from the stack
+	 * This function removes a given State_Node from the stack
+	 * @return the given stack without the given State_Node
 	 */
 	private Stack<State_Node> removeFromStack (Stack<State_Node> original , State_Node toRemove) {
 		Stack<State_Node> tempSt = new Stack<State_Node>();
@@ -100,29 +106,22 @@ public class IDA_Star implements Algorithm {
 
 		return original;
 	}
-	
-	//********************************************************************************
 
-	//********simple getters
+	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
-	public int getIteration() {return iteration;}
-
-	//****************** Private Data *****************
-
+	//********************************** Private Data **********************************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
-	private int iteration;
 
-	//****************** Constructors *****************
+	//********************************** Constructors **********************************
 	public IDA_Star (State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=1;
-		this.iteration=0;
+		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 	}
 
 }

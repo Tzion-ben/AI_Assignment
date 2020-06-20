@@ -1,5 +1,5 @@
-BFS
-no time
+DFBnB
+with time
 no open
 4x4
 Black:

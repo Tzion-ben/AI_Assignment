@@ -1,5 +1,8 @@
 package Algorithms;
-
+/**
+ * This class represent the DFID Algorithm
+ * @author Tzion
+ */
 import java.util.Hashtable;
 import DataStructure.Color;
 import DataStructure.State_Node;
@@ -7,7 +10,10 @@ import DataStructure.State_Node;
 public class DFID implements Algorithm {
 
 	/**
+	 * This function represent a DFID Algorithm.
 	 * 
+	 * This pare is manage the recursive limited DFS, it recall the limited DFS many times with a different
+	 * limit (by a for loop), until infinity, until it find the path or failed
 	 */
 	@Override
 	public State_Node Search_Goal_Algorithm() {
@@ -15,18 +21,18 @@ public class DFID implements Algorithm {
 
 			/**
 			 * this hash table is for loop Avoidance, because if we work on a branch and expected some
-			 * state but at the future we can maybe generate or expected this state agsin because it can be
+			 * state but at the future we can maybe generate or expected this state again because it can be
 			 * a child of other future state so it will make a infinite loop
 			 */
 			Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
-			//Initialize a cutOff state that will use the number of the operator of it to true==1 or false==0
+			//Initialize a cutOff state that will use the number of the operator of it to true==1 or false==2
 			State_Node result = Limited_DFS(this.start, depth , loopAvoidance);
 
 			/**
-			 * if the result.GetOperation.GetNum is not -1 that is mean a cutoff (i am decided thath -1 is mark a cutOff)
-			 * that means the algo stooped because the limit came to zero but still not found a path than return the goal
-			 * with a pointers to the path at it or null if there is no path at all 
+			 * if the result.getNumDirection is not 0 that is mean a cutoff (i am decided that 0 is mark a cutOff)
+			 * that means the algo stooped because the limit came to zero but still not found a path and not failed
+			 * so it will run again
 			 * */
 			if(result.getNumDirection()!=0) {return result;}//like: if(result != cutOff)
 		}
@@ -35,7 +41,9 @@ public class DFID implements Algorithm {
 	}
 
 	/**
-	 *....
+	 *This Algorithm is a limited DFS, that means the algo runs to the depth until some limit and stops, if there is
+	 *the Goal so it very well , if it's failed so we return null and if we came to 0 at the recursion so we will 
+	 *run again with a bigger limit at the next time 
 	 * @param depth
 	 * @param loopAvoidance Hashtable
 	 * @return
@@ -80,7 +88,7 @@ public class DFID implements Algorithm {
 						else if(result.getNumDirection() != 0 ) {return result;}	
 					}
 					/**
-					 * else --> it's goe's to the next operator it ths state is at the loop Avoidance hash Table
+					 * else --> it's goe's to the next operator it the state is at the loop Avoidance hash Table
 					 * to not create a loop
 					 */
 				}
@@ -97,22 +105,21 @@ public class DFID implements Algorithm {
 		}
 	}
 
-	//*********************************************************************************
-	//********simple getters
+	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
-	//****************** Private Data *****************
+	//********************************** Private Data **********************************
 	private State_Node start;
 	private State_Node goal;
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
-	//****************** Constructors *****************
+	//********************************** Constructors **********************************
 	public DFID (State_Node start, State_Node goal) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
-		this.NodesNum=1;
+		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 	}
 
 }

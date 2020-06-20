@@ -1,4 +1,5 @@
 package DataStructure;
+import java.util.Arrays;
 /**
  * This class is represent a State_Node, it means that it is the state of every move at the 
  * search Algorithm 
@@ -191,6 +192,33 @@ public class State_Node {
 			for(int j=0 ; j<newStateMat[0].length ; j++) 
 				newStateMat[i][j]=this.StateMatrix[i][j];
 		return newStateMat;
+	}
+
+	/**
+	 * This function prints the state Board, the operation that brings to this state anf the f(n)
+	 * of the state
+	 */
+	public void printState() {
+		System.out.println("Operation that bring to this state is: " + op + ", f(n) is: " + f);
+		System.out.println( "State Board :");
+		printBoard();
+		System.out.println();
+	}
+
+	/**
+	 * This function prints the Game Board
+	 */
+	public void printBoard (){
+		for(int i=0 ; i<this.StateMatrix.length ; i++) { 
+			for(int j=0 ; j<this.StateMatrix[0].length ; j++) {
+				if(this.StateMatrix[i][j]!=0) {
+					System.out.print(this.StateMatrix[i][j]+numbersColors.get(this.StateMatrix[i][j]).toString()+"|");
+				}else {
+					System.out.print("_____|");
+				}
+			}
+			System.out.println();
+		}
 	}
 
 	//************************************ Private Methods ************************************

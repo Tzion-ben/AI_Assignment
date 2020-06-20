@@ -46,7 +46,7 @@ public class Ex1 {
 				goalState[0].length-1,0);
 
 		//RUNS ALL THE GAME !!
-		RUN_The_GAME(inputFIle.getAlgo(), startState, goal, inputFIle.getShowTimeORnot());
+		RUN_The_GAME(inputFIle.getAlgo(), startState, goal, inputFIle.getShowTimeORnot(), inputFIle.getShowOpenListORnot());
 
 	}
 
@@ -58,7 +58,7 @@ public class Ex1 {
 	 * @param goal
 	 * @param printTime
 	 */
-	public static void RUN_The_GAME(String algo, State_Node startState ,State_Node goal, boolean printTime) {
+	public static void RUN_The_GAME(String algo, State_Node startState ,State_Node goal, boolean printTime, boolean withOpen) {
 
 		long startTime=0 ,endTime = 0;
 		double finalTime=0;
@@ -66,23 +66,23 @@ public class Ex1 {
 
 		switch (algo) {
 		case "BFS": 
-			searchPathToGoal =new BFS(startState, goal);
+			searchPathToGoal =new BFS(startState, goal, withOpen);
 			break;
 
 		case "DFID": 
-			searchPathToGoal =new DFID(startState, goal);
+			searchPathToGoal =new DFID(startState, goal, withOpen);
 			break;
 
 		case "A*": 
-			searchPathToGoal =new A_Star(startState, goal);
+			searchPathToGoal =new A_Star(startState, goal, withOpen);
 			break;
 
 		case "IDA*": 
-			searchPathToGoal =new IDA_Star(startState, goal);
+			searchPathToGoal =new IDA_Star(startState, goal, withOpen);
 			break;
 
 		case "DFBnB": 
-			searchPathToGoal =new DFBnB(startState, goal);
+			searchPathToGoal =new DFBnB(startState, goal, withOpen);
 			break;
 		}
 

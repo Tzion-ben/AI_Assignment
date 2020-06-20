@@ -4,6 +4,7 @@ package Algorithms;
  * @author Tzion
  */
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Stack;
 import DataStructure.Color;
 import DataStructure.State_Node;
@@ -36,6 +37,8 @@ public class IDA_Star implements Algorithm {
 			loopAvoidance.put(this.start.key(), this.start);
 
 			while(!howNext.isEmpty()) {
+				iteration_Counter++;
+
 				State_Node n = howNext.pop();
 				if(n.getTag() == 1)//if the node marked as "out"
 					loopAvoidance.remove(n.key());
@@ -46,6 +49,9 @@ public class IDA_Star implements Algorithm {
 					Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 					//returns null if there is no path
 					if(allowedOprerators.isEmpty()) {return null;}
+
+					//if have to print the openList 
+					if(!howNext.isEmpty() && withOpen) {printOpenList(howNext);}
 
 					for(int i=0 ; i<4 ; i++) {
 						if(allowedOprerators.containsKey(i)) {
@@ -107,6 +113,22 @@ public class IDA_Star implements Algorithm {
 		return original;
 	}
 
+	/**
+	 * This function will print the OpenList if needed
+	 */
+	private void printOpenList (Stack<State_Node> openList) {
+		if(!openList.isEmpty() && withOpen) {
+			Iterator<State_Node> iter = openList.iterator();
+			while(iter.hasNext()) {
+				State_Node toPrint = iter.next(); 
+				if(!toPrint.getOperation().equals("0-N")) {
+					System.out.println("Iteration number "+iteration_Counter +" : ");
+					toPrint.printState();
+				}
+			}
+		}
+	}
+
 	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
@@ -116,12 +138,18 @@ public class IDA_Star implements Algorithm {
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
+	private int iteration_Counter;
+	private boolean withOpen;
+
 	//********************************** Constructors **********************************
-	public IDA_Star (State_Node start, State_Node goal) {
+	public IDA_Star (State_Node start, State_Node goal, boolean withOpen) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;//because the Start State is already created out of the Algorithm
+
+		iteration_Counter = -1;
+		this.withOpen=withOpen;
 	}
 
 }

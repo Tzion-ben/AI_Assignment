@@ -4,6 +4,7 @@ package Algorithms;
  * @author Tzion
  */
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Stack;
 import DataStructure.Color;
@@ -39,6 +40,7 @@ public class DFBnB implements Algorithm {
 		loopAvoidance.put(this.start.key(), this.start);
 
 		while(!howNext.isEmpty()) { 
+			iteration_Counter++;
 
 			State_Node n = howNext.pop();
 
@@ -51,6 +53,9 @@ public class DFBnB implements Algorithm {
 				//apply all the allowed Operators on n in increasing order
 				PriorityQueue<State_Node> N = sortNodes(n);
 
+				//if have to print the openList 
+				if(!howNext.isEmpty() && withOpen) {printOpenList(howNext);}
+				
 				while(!N.isEmpty()) {
 					State_Node N_Node = N.peek();
 
@@ -154,6 +159,22 @@ public class DFBnB implements Algorithm {
 		return original;
 	}
 
+	/**
+	 * This function will print the OpenList if needed
+	 */
+	private void printOpenList (Stack<State_Node> openList) {
+		if(!openList.isEmpty() && withOpen) {
+			Iterator<State_Node> iter = openList.iterator();
+			while(iter.hasNext()) {
+				State_Node toPrint = iter.next(); 
+				if(!toPrint.getOperation().equals("0-N")) {
+					System.out.println("Iteration number "+iteration_Counter +" : ");
+					toPrint.printState();
+				}
+			}
+		}
+	}
+
 	/************************************ Private Methods *******************************************
 	/**
 	 * This function sets a classes that will help as to make some operations on the 
@@ -175,15 +196,20 @@ public class DFBnB implements Algorithm {
 
 	private static ColorValidator colorHelper;
 	private static OpertionHelper opertionHelper;
+	
+	private int iteration_Counter;
+	private boolean withOpen;
 
 	//********************************** Constructors **********************************
-	public DFBnB(State_Node start, State_Node goal) {
+	public DFBnB(State_Node start, State_Node goal,boolean withOpen) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;//because the Start State is already created out of the Algorithm
 
 		setHelpClass();
+		iteration_Counter = -1;
+		this.withOpen=withOpen;
 	}
 
 }

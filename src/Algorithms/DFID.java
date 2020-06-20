@@ -1,9 +1,12 @@
 package Algorithms;
+import java.util.Collection;
 /**
  * This class represent the DFID Algorithm
  * @author Tzion
  */
 import java.util.Hashtable;
+import java.util.Iterator;
+
 import DataStructure.Color;
 import DataStructure.State_Node;
 
@@ -18,7 +21,9 @@ public class DFID implements Algorithm {
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		for(int depth=1 ; depth<Integer.MAX_VALUE; depth++) {
-
+			//start to counting the iterations again from -1
+			iteration_Counter = -1;
+			
 			/**
 			 * this hash table is for loop Avoidance, because if we work on a branch and expected some
 			 * state but at the future we can maybe generate or expected this state again because it can be
@@ -63,6 +68,8 @@ public class DFID implements Algorithm {
 			//put the state to the hash table to know that it work'w on
 			//some brunch so if at the future this state will expected again it;s a loop
 			loopAvoidance.put(n.key(), n);
+			
+			iteration_Counter++;
 
 			//cutOff--> False by sets the number of the operator of the state to 2
 			cutOff.setNumDirection(2);
@@ -70,6 +77,10 @@ public class DFID implements Algorithm {
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 			//returns null if there is no allow operators any more so no have path
 			if(allowedOprerators.isEmpty()) {return null;}
+			
+			//if have to print the openList 
+			if(!loopAvoidance.isEmpty() && withOpen) {printOpenList(loopAvoidance);}
+			
 			for(int i=0 ; i<4 ; i++) {
 				if(allowedOprerators.containsKey(i)) {
 					String tempOp = allowedOprerators.get(i);
@@ -105,6 +116,22 @@ public class DFID implements Algorithm {
 		}
 	}
 
+	/**
+	 * This function will print the OpenList if needed
+	 */
+	private void printOpenList (Hashtable<String, State_Node> openList) {
+		if(!openList.isEmpty() && withOpen) {
+			Collection<State_Node> collec = openList.values();
+			Iterator<State_Node> iter = collec.iterator();
+			while(iter.hasNext()) {
+				State_Node toPrint = iter.next(); 
+				if(!toPrint.getOperation().equals("0-N")) {
+					System.out.println("Iteration number "+iteration_Counter +" : ");
+					toPrint.printState();
+				}
+			}
+		}
+	}
 	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
@@ -114,12 +141,18 @@ public class DFID implements Algorithm {
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
+	private int iteration_Counter;
+	private boolean withOpen;
+
 	//********************************** Constructors **********************************
-	public DFID (State_Node start, State_Node goal) {
+	public DFID (State_Node start, State_Node goal, boolean withOpen) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;//because the Start State is already created out of the Algorithm
+
+		iteration_Counter = -1;
+		this.withOpen=withOpen;
 	}
 
 }

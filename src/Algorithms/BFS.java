@@ -1,9 +1,11 @@
 package Algorithms;
+import java.util.Collection;
 /**
  * This class represent the BFS Algorithm
  * @author Tzion
  */
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import DataStructure.*;
 
@@ -26,6 +28,8 @@ public class BFS implements Algorithm  {
 		openList.put(this.start.key(),this.start);
 
 		while(!howNext.isEmpty()) {
+			iteration_Counter++;
+
 			State_Node n = howNext.poll();
 			closeList.put(n.key(),n);
 
@@ -33,6 +37,9 @@ public class BFS implements Algorithm  {
 
 			//returns null if there is no path
 			if(allowedOprerators.isEmpty()) {return null;}
+			
+			//if have to print the openList 
+			if(!openList.isEmpty() && withOpen) {printOpenList(openList);}
 
 			for(int i=0 ; i<4 ; i++) {
 				if(allowedOprerators.containsKey(i)) {
@@ -55,6 +62,23 @@ public class BFS implements Algorithm  {
 		return null;
 	}
 
+	/**
+	 * This function will print the OpenList if needed
+	 */
+	private void printOpenList (Hashtable<String, State_Node> openList) {
+		if(!openList.isEmpty() && withOpen) {
+			Collection<State_Node> collec = openList.values();
+			Iterator<State_Node> iter = collec.iterator();
+			while(iter.hasNext()) {
+				State_Node toPrint = iter.next(); 
+				if(!toPrint.getOperation().equals("0-N")) {
+					System.out.println("Iteration number "+iteration_Counter +" : ");
+					toPrint.printState();
+				}
+			}
+		}
+	}
+
 	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
@@ -64,12 +88,18 @@ public class BFS implements Algorithm  {
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
+	private int iteration_Counter;
+	private boolean withOpen;
+
 	//************************************ Constructor ***********************************
-	public BFS(State_Node start, State_Node goal) {
+	public BFS(State_Node start, State_Node goal, boolean withOpen) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;//because the Start State is already created out of the Algorithm
+
+		iteration_Counter = -1;
+		this.withOpen=withOpen;
 	}
 
 }

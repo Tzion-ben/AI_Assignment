@@ -26,8 +26,10 @@ public class outputTXT {
 			newFile.newLine();
 			newFile.write("Num: "+this.numNodes);
 			newFile.newLine();
-			newFile.write("Cost: "+this.cost);
-			newFile.newLine();
+			if(!this.path.equals("no path")) {
+				newFile.write("Cost: "+this.cost);
+				newFile.newLine();
+			}
 			if(printTime) {
 				newFile.write(String.valueOf(this.time)+" sec");
 				newFile.newLine();

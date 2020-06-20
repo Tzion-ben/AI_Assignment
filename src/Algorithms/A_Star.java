@@ -1,9 +1,11 @@
 package Algorithms;
+import java.util.Collection;
 /**
  * This class represent the A* Algorithm
  * @author Tzion
  */
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import DataStructure.Color;
 import DataStructure.Heuristic_Comperator;
@@ -32,6 +34,8 @@ public class A_Star implements Algorithm{
 		openList.put(this.start.key(), this.start);
 
 		while(!howNext.isEmpty()) {
+			iteration_Counter++;
+
 			State_Node n = howNext.poll();
 			if(n.key().equals(this.goal.key())) {return n;}
 
@@ -41,6 +45,9 @@ public class A_Star implements Algorithm{
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 			//returns null if there is no path
 			if(allowedOprerators.isEmpty()) {return null;}
+
+			//if have to print the openList 
+			if(!openList.isEmpty() && withOpen) {printOpenList(openList);}
 
 			for(int i=0 ; i<4 ; i++) {
 				if(allowedOprerators.containsKey(i)) {
@@ -59,6 +66,10 @@ public class A_Star implements Algorithm{
 
 					else if(openList.containsKey(child.key())) {
 						if(openList.get(child.key()).getF() > child.getF()) {
+
+
+							System.out.println(child.toString());
+
 							openList.remove(child.key());
 							State_Node tempChile = openList.get(child.key());
 							howNext.remove(tempChile);
@@ -79,6 +90,23 @@ public class A_Star implements Algorithm{
 		return null;
 	}
 
+	/**
+	 * This function will print the OpenList if needed
+	 */
+	private void printOpenList (Hashtable<String, State_Node> openList) {
+		if(!openList.isEmpty() && withOpen) {
+			Collection<State_Node> collec = openList.values();
+			Iterator<State_Node> iter = collec.iterator();
+			while(iter.hasNext()) {
+				State_Node toPrint = iter.next(); 
+				if(!toPrint.getOperation().equals("0-N")) {
+					System.out.println("Iteration number "+iteration_Counter +" : ");
+					toPrint.printState();
+				}
+			}
+		}
+	}
+
 	//********************************** simple getters **********************************
 	public int getNodesNum() {return NodesNum;}
 
@@ -88,12 +116,18 @@ public class A_Star implements Algorithm{
 	private Hashtable<Integer, Color> numbersColors;
 	private int NodesNum;
 
+	private int iteration_Counter;
+	private boolean withOpen;
+
 	//************************************ Constructor ***********************************
-	public A_Star (State_Node start, State_Node goal) {
+	public A_Star (State_Node start, State_Node goal, boolean withOpen) {
 		this.start=start;
 		this.goal=goal;
 		this.numbersColors=this.goal.getNumbersColors();
 		this.NodesNum=1;//because the Start State is already created out of the Algorithm
+
+		iteration_Counter = -1;
+		this.withOpen=withOpen;
 	}
 
 }

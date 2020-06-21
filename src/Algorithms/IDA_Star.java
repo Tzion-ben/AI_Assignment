@@ -24,7 +24,8 @@ public class IDA_Star implements Algorithm {
 		 */
 		Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
-		Stack<State_Node> howNext = new Stack<State_Node>();
+		//this stack will contain all the states that was generated but still wasn't expected 	
+		Stack<State_Node> openListSTACK = new Stack<State_Node>();
 
 		//the start of the TrashHold is the heuristic function of the start Node
 		int treshHold = this.start.getH();
@@ -33,25 +34,25 @@ public class IDA_Star implements Algorithm {
 			int minF = Integer.MAX_VALUE; //the minimum F now is infinity at the start
 			this.start.setTag(0);//starting again
 
-			howNext.push(this.start); 
+			openListSTACK.push(this.start); 
 			loopAvoidance.put(this.start.key(), this.start);
 
-			while(!howNext.isEmpty()) {
+			while(!openListSTACK.isEmpty()) {
 				iteration_Counter++;
 
-				State_Node n = howNext.pop();
+				State_Node n = openListSTACK.pop();
 				if(n.getTag() == 1)//if the node marked as "out"
 					loopAvoidance.remove(n.key());
 				else {
 					n.setTag(1);//marking the node as "out"
-					howNext.push(n);
+					openListSTACK.push(n);
 
 					Hashtable<Integer, String> allowedOprerators= n.getOprerators();
 					//returns null if there is no path
 					if(allowedOprerators.isEmpty()) {return null;}
 
 					//if have to print the openList 
-					if(!howNext.isEmpty() && withOpen) {printOpenList(howNext);}
+					if(!openListSTACK.isEmpty() && withOpen) {printOpenList(openListSTACK);}
 
 					for(int i=0 ; i<4 ; i++) {
 						if(allowedOprerators.containsKey(i)) {
@@ -77,7 +78,7 @@ public class IDA_Star implements Algorithm {
 								if(loopAvoidance.get(child.key()).getTag() == -1) {
 									if(loopAvoidance.get(child.key()).getF() > child.getF()) {
 										loopAvoidance.remove(child.key());
-										removeFromStack(howNext, child);
+										removeFromStack(openListSTACK, child);
 									}
 
 									//else --> move to the next Operator (cut and move on...)
@@ -87,7 +88,7 @@ public class IDA_Star implements Algorithm {
 
 							if(child.key().equals(this.goal.key())) {return child;}//if we found the goal so return is and done
 
-							howNext.push(child);
+							openListSTACK.push(child);
 							loopAvoidance.put(child.key(), child);
 						}
 					}

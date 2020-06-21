@@ -1,9 +1,9 @@
 package Algorithms;
-import java.util.Collection;
 /**
  * This class represent the A* Algorithm
  * @author Tzion
  */
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.PriorityQueue;
@@ -22,7 +22,7 @@ public class A_Star implements Algorithm{
 		Heuristic_Comperator F_comperator = new Heuristic_Comperator();
 
 		//PQ based on the F of every state, the state with the minimum F will go out first.
-		PriorityQueue<State_Node> howNext = new PriorityQueue<State_Node>(F_comperator);
+		PriorityQueue<State_Node> openListPQ = new PriorityQueue<State_Node>(F_comperator);
 
 		//this hash table will contain all the states that was generated but still wasn't expected 
 		Hashtable<String,State_Node> openList = new Hashtable<String,State_Node>();
@@ -30,13 +30,13 @@ public class A_Star implements Algorithm{
 		//this hash table will contain all the states that was generated and was expected 
 		Hashtable<String,State_Node> closeList = new Hashtable<String,State_Node>();
 
-		howNext.add(this.start);
+		openListPQ.add(this.start);
 		openList.put(this.start.key(), this.start);
 
-		while(!howNext.isEmpty()) {
+		while(!openListPQ.isEmpty()) {
 			iteration_Counter++;
 
-			State_Node n = howNext.poll();
+			State_Node n = openListPQ.poll();
 			if(n.key().equals(this.goal.key())) {return n;}
 
 			closeList.put(n.key(),n);
@@ -60,7 +60,7 @@ public class A_Star implements Algorithm{
 					//if it is a new state that wasn't even generated so put it at the open list 
 					//and at the PQ
 					if(!closeList.containsKey(child.key()) && !openList.containsKey(child.key())) {
-						howNext.add(child);
+						openListPQ.add(child);
 						openList.put(child.key(),child);
 					}
 
@@ -72,9 +72,9 @@ public class A_Star implements Algorithm{
 
 							openList.remove(child.key());
 							State_Node tempChile = openList.get(child.key());
-							howNext.remove(tempChile);
+							openListPQ.remove(tempChile);
 
-							howNext.add(child);
+							openListPQ.add(child);
 							openList.put(child.key(), child);
 						}
 					}

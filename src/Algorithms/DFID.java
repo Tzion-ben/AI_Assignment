@@ -21,21 +21,23 @@ public class DFID implements Algorithm {
 	@Override
 	public State_Node Search_Goal_Algorithm() {
 		for(int depth=1 ; depth<Integer.MAX_VALUE; depth++) {
-			//start to counting the iterations again from -1
+			//Start to counting the iterations again from -1
 			iteration_Counter = -1;
 			
 			/**
-			 * this hash table is for loop Avoidance, because if we work on a branch and expected some
+			 * This hash table is for loop Avoidance, because if we work on a branch and expected some
 			 * state but at the future we can maybe generate or expected this state again because it can be
 			 * a child of other future state so it will make a infinite loop
 			 */
 			Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
-			//Initialize a cutOff state that will use the number of the operator of it to true==1 or false==2
+			/**
+			 *Initialize a cutOff state that will use the number of the operator of it to true==1 or false==2 
+			 */
 			State_Node result = Limited_DFS(this.start, depth , loopAvoidance);
 
 			/**
-			 * if the result.getNumDirection is not 0 that is mean a cutoff (i am decided that 0 is mark a cutOff)
+			 * If the result.getNumDirection is not 0 that is mean a cutoff (i am decided that 0 is mark a cutOff)
 			 * that means the algo stooped because the limit came to zero but still not found a path and not failed
 			 * so it will run again
 			 * */

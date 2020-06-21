@@ -61,8 +61,8 @@ public class initTXT {
 
 				//want to cut the colon from the line, to work only with the numbers after it
 				String temp_BlackBlocks=newPuzzleReader.readLine();
-				String [] withOUTaColon_Black=temp_BlackBlocks.split(": ");
-				if(withOUTaColon_Black.length>1) {this.BlackBlocks=withOUTaColon_Black[1];}
+				String [] withOUTaColon_Black=temp_BlackBlocks.split(":");
+				if(withOUTaColon_Black.length>1) {this.BlackBlocks=withOUTaColon_Black[1].strip();}
 
 				//else: if no have a numbers for BLACK Blocks
 				else{this.BlackBlocks=null;}
@@ -70,8 +70,8 @@ public class initTXT {
 
 				//want to cut the colon from the line, to work only with the numbers after it
 				String temp_RedBlocks=newPuzzleReader.readLine();
-				String [] withOUTaColon_Red=temp_RedBlocks.split(": ");
-				if(withOUTaColon_Red.length>1) {this.RedBloacks=withOUTaColon_Red[1];}
+				String [] withOUTaColon_Red=temp_RedBlocks.split(":");
+				if(withOUTaColon_Red.length>1) {this.RedBloacks=withOUTaColon_Red[1].strip();}
 
 				//else: if no have a numbers for RED Blocks
 				else {this.RedBloacks=null;}

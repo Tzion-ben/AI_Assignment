@@ -27,7 +27,8 @@ public class DFBnB implements Algorithm {
 		 */
 		Hashtable<String, State_Node> loopAvoidance = new Hashtable<String, State_Node>();
 
-		Stack<State_Node> howNext = new Stack<State_Node>();
+		//this stack will contain all the states that was generated but still wasn't expected 	
+		Stack<State_Node> openList = new Stack<State_Node>();
 
 		// the thrashHold will be sets depend on the calculate at the setTreshHold method 
 		int treshHold= setTreshHold();
@@ -36,26 +37,26 @@ public class DFBnB implements Algorithm {
 		State_Node result = null;
 
 		this.start.setTag(0);
-		howNext.add(this.start);
+		openList.add(this.start);
 		loopAvoidance.put(this.start.key(), this.start);
 
-		while(!howNext.isEmpty()) { 
+		while(!openList.isEmpty()) { 
 			iteration_Counter++;
 
-			State_Node n = howNext.pop();
+			State_Node n = openList.pop();
 
 			if(n.getTag() == 1)//if the node marked as "out"
 				loopAvoidance.remove(n.key());
 			else {
 				n.setTag(1);//marking the node as "out"
-				howNext.push(n);
+				openList.push(n);
 
 				//apply all the allowed Operators on n in increasing order
 				PriorityQueue<State_Node> N = sortNodes(n);
 
 				//if have to print the openList 
-				if(!howNext.isEmpty() && withOpen) {printOpenList(howNext);}
-				
+				if(!openList.isEmpty() && withOpen) {printOpenList(openList);}
+
 				while(!N.isEmpty()) {
 					State_Node N_Node = N.peek();
 
@@ -77,7 +78,7 @@ public class DFBnB implements Algorithm {
 							N.poll();
 						}else {
 							loopAvoidance.remove(N_Node.key());
-							removeFromStack(howNext, N_Node);
+							removeFromStack(openList, N_Node);
 						}
 					}
 
@@ -91,7 +92,7 @@ public class DFBnB implements Algorithm {
 					//if all this not worked before so insert all the nodes that left at th N to 
 					//howNext Stack and to the hashTable
 					else {
-						howNext.add(N_Node);
+						openList.add(N_Node);
 						loopAvoidance.put(N_Node.key(), N_Node);
 					}
 				}
@@ -103,7 +104,7 @@ public class DFBnB implements Algorithm {
 
 	/**
 	 * This function calculate the treshHold depend on the size of the matrix, if it less then
-	 * 12 without the BLACK block numbers so the treshHold will be n factorial,
+	 * 12 without the BLACK block and without the "_" block numbers so the treshHold will be n factorial,
 	 * if it more than 12 so the trashHold will be infinity(Integer.MaxValue) 
 	 * @return calculated treshHold
 	 */
@@ -111,7 +112,7 @@ public class DFBnB implements Algorithm {
 		int treshHold = Integer.MAX_VALUE;
 
 		int SIZE = this.start.getStateMatrix().length * this.start.getStateMatrix()[0].length;
-		if(colorHelper.getNumWithOutBlackBlocks() <12) {treshHold = opertionHelper.setMatrixFactorial(SIZE);}
+		if(colorHelper.getNumWithOutBlackBlocks() <12) {treshHold = opertionHelper.setMatrixFactorial(SIZE-1);}
 
 		return treshHold;
 	}
@@ -196,7 +197,7 @@ public class DFBnB implements Algorithm {
 
 	private static ColorValidator colorHelper;
 	private static OpertionHelper opertionHelper;
-	
+
 	private int iteration_Counter;
 	private boolean withOpen;
 

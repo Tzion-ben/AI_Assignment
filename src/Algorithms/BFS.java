@@ -16,7 +16,7 @@ public class BFS implements Algorithm  {
 	 */
 	public State_Node Search_Goal_Algorithm() {
 		//using a Queue based on the List  
-		ConcurrentLinkedQueue<State_Node> howNext = new ConcurrentLinkedQueue<State_Node>();
+		ConcurrentLinkedQueue<State_Node> openListQ = new ConcurrentLinkedQueue<State_Node>();
 
 		//this hash table will contain all the states that was generated but still wasn't expected 
 		Hashtable<String,State_Node> openList = new Hashtable<String,State_Node>();
@@ -24,13 +24,13 @@ public class BFS implements Algorithm  {
 		//this hash table will contain all the states that was generated and was expected 
 		Hashtable<String,State_Node> closeList = new Hashtable<String,State_Node >();
 
-		howNext.add(this.start);
+		openListQ.add(this.start);
 		openList.put(this.start.key(),this.start);
 
-		while(!howNext.isEmpty()) {
+		while(!openListQ.isEmpty()) {
 			iteration_Counter++;
 
-			State_Node n = howNext.poll();
+			State_Node n = openListQ.poll();
 			closeList.put(n.key(),n);
 
 			Hashtable<Integer, String> allowedOprerators= n.getOprerators();
@@ -52,7 +52,7 @@ public class BFS implements Algorithm  {
 					//if it is a new state that wasn't even generated so put it at the open list 
 					if(!closeList.containsKey(child.key()) && !openList.containsKey(child.key())) {
 						if((child.key().equals(this.goal.key())) ){return child;}
-						howNext.add(child);
+						openListQ.add(child);
 						openList.put(child.key(),child);
 					}
 				}
